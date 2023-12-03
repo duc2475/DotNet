@@ -1,0 +1,48 @@
+﻿@model Ecommerce.Models.TblMidCategory
+
+@{
+    ViewData["Title"] = "Edit";
+    Layout = "~/Areas/admin/Views/Shared/_AdminLayout.cshtml";
+}
+<div class="content-wrapper">
+    <!-- Content -->
+
+    <div class="container-xxl flex-grow-1 container-p-y">
+        <h4 class="fw-bold py-3 mb-4"><span class="text-muted fw-light">Quản Lý Ngành Hàng/</span> Sửa Ngành Hàng Vừa</h4>
+
+        <!-- Basic Layout -->
+        <div class="row">
+            <div class="col-xl">
+                <div class="card mb-4">
+                    <div class="card-header d-flex justify-content-between align-items-center">
+                        <h5 class="mb-0">Sửa Ngành Hàng Vừa</h5>
+                    </div>
+                    <div class="card-body">
+                        <form asp-action="Edit">
+                            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+                            <input type="hidden" asp-for="McatId" />
+                            <div class="form-group">
+                                <label asp-for="McatName" class="control-label">Trên Ngành Hàng Vừa</label>
+                                <input asp-for="McatName" class="form-control" />
+                                <span asp-validation-for="McatName" class="text-danger"></span>
+                            </div>
+                            <div class="form-group">
+                                <label asp-for="TcatId" class="control-label">Ngành Hàng Lớn</label>
+                                <select asp-for="TcatId" class="form-control" asp-items="ViewBag.TcatId"></select>
+                                <span asp-validation-for="TcatId" class="text-danger"></span>
+                            </div>
+                            <div class="row">
+                                <div class="form-group pt-4 col">
+                                    <input type="submit" value="Save" class="btn btn-primary" />
+                                </div>
+                                <div class="form-group pt-4 col-2">
+                                    <a asp-action="Index" asp-controller="MidCategories" asp-area="admin" class="btn btn-primary">Back to list</a>
+                                </div>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

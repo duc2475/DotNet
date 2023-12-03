@@ -1,0 +1,54 @@
+﻿@model IEnumerable<Ecommerce.Models.TblEndCategory>
+
+@{
+    ViewData["Title"] = "Index";
+    Layout = "~/Areas/admin/Views/Shared/_AdminLayout.cshtml";
+}
+<div class="content-wrapper">
+    <!-- Content -->
+
+    <div class="container-xxl flex-grow-1 container-p-y">
+        <h4 class="fw-bold py-3 mb-4"><span class="text-muted fw-light">Quản Lý Ngành Hàng /</span> Ngành Hàng Nhỏ</h4>
+
+        <!-- Basic Bootstrap Table -->
+        <div class="card">
+            <div class="row">
+                <h5 class="card-header col">Danh Sách Ngành Hàng Nhỏ</h5>
+                <div class="col-2 pt-3">
+                    <a asp-action="Create" asp-controller="EndCategories" asp-area="admin" class="btn btn-primary">Tạo mới</a>
+                </div>
+            </div>
+            <div class="table-responsive text-nowrap">
+                <table class="table">
+                    <thead>
+                        <tr>
+                            <th>ID Ngành</th>
+                            <th>Tên Ngành Hàng</th>
+                            <th>Tên Ngành Hàng Vừa</th>
+                            <th>Thao Tác</th>
+                        </tr>
+                    </thead>
+                    <tbody class="table-border-bottom-0">
+                        @foreach (var item in Model)
+                        {
+                            <tr>
+                                <td>@Html.DisplayFor(modelsitem => item.EcatId)</td>
+                                <td><i class="fab fa-angular fa-lg text-danger me-3"></i> <strong>@Html.DisplayFor(modelsitem => item.EcatName)</strong></td>
+                                <td>
+                                    @Html.DisplayFor(modelsitem => item.Mcat.McatName)
+                                </td>
+                                <td class="row">
+                                    <a class="btn btn-sm btn-primary col-3" asp-route-id="@item.EcatId" asp-action="Edit" asp-controller="EndCategories" asp-area="admin">Edit</a>
+                                    <form asp-action="Delete" class="col">
+                                        <input type="hidden" name="id" value="@item.EcatId" />
+                                        <input type="submit" value="Delete" class="btn btn-sm btn-outline-danger" />
+                                    </form>
+                                </td>
+                            </tr>
+                        }
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+</div>

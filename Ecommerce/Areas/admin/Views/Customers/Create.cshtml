@@ -1,0 +1,76 @@
+﻿@model Ecommerce.Models.TblCustomer
+
+@{
+    ViewData["Title"] = "Create";
+    Layout = "~/Areas/admin/Views/Shared/_AdminLayout.cshtml";
+}
+
+<h1>Create</h1>
+
+<h4>TblCustomer</h4>
+<hr />
+<div class="row">
+    <div class="col-md-4">
+        <form asp-action="Create">
+            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+            <div class="form-group">
+                <label asp-for="CustName" class="control-label"></label>
+                <input asp-for="CustName" class="form-control" />
+                <span asp-validation-for="CustName" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="CustLname" class="control-label"></label>
+                <input asp-for="CustLname" class="form-control" />
+                <span asp-validation-for="CustLname" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="CustEmail" class="control-label"></label>
+                <input asp-for="CustEmail" class="form-control" />
+                <span asp-validation-for="CustEmail" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="CustPhone" class="control-label"></label>
+                <input asp-for="CustPhone" class="form-control" />
+                <span asp-validation-for="CustPhone" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="CustAddress" class="control-label"></label>
+                <input asp-for="CustAddress" class="form-control" />
+                <span asp-validation-for="CustAddress" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="CustCity" class="control-label"></label>
+                <input asp-for="CustCity" class="form-control" />
+                <span asp-validation-for="CustCity" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="CustSate" class="control-label"></label>
+                <input asp-for="CustSate" class="form-control" />
+                <span asp-validation-for="CustSate" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="CustZip" class="control-label"></label>
+                <input asp-for="CustZip" class="form-control" />
+                <span asp-validation-for="CustZip" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="CustDatetime" class="control-label"></label>
+                <input asp-for="CustDatetime" class="form-control" />
+                <span asp-validation-for="CustDatetime" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="CustStatus" class="control-label"></label>
+                <input asp-for="CustStatus" class="form-control" />
+                <span asp-validation-for="CustStatus" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <input type="submit" value="Create" class="btn btn-primary" />
+            </div>
+        </form>
+    </div>
+</div>
+
+<div>
+    <a asp-action="Index">Back to List</a>
+</div>
+

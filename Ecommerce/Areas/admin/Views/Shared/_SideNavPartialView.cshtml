@@ -1,0 +1,174 @@
+﻿<aside id="layout-menu" class="layout-menu menu-vertical menu bg-menu-theme">
+    <div class="app-brand demo">
+        <a asp-area="admin" asp-controller="Home" asp-action="Index" class="app-brand-link">
+            <span class="app-brand-logo demo">
+                <img width="50"
+                     viewBox="0 0 50 42"
+                     src="~/assets/img/icons/brands/Borcelle.png"
+                     class="app-brand-logo demo"></img>
+            </span>
+            <span class="app-brand-text demo menu-text fw-bolder ms-2">Family Báo</span>
+        </a>
+
+        <a href="javascript:void(0);" class="layout-menu-toggle menu-link text-large ms-auto d-block d-xl-none">
+            <i class="bx bx-chevron-left bx-sm align-middle"></i>
+        </a>
+    </div>
+
+    <div class="menu-inner-shadow"></div>
+
+    <ul class="menu-inner py-1">
+        <!-- Dashboard -->
+        <li class="menu-item active">
+            <a asp-area="admin" asp-controller="Home" asp-action="Index" class="menu-link">
+                <i class="menu-icon tf-icons bx bx-home-circle"></i>
+                <div data-i18n="Analytics">Trang Chủ</div>
+            </a>
+        </li>
+
+        <!-- Layouts -->
+        <li class="menu-item">
+            <a href="javascript:void(0);" class="menu-link menu-toggle">
+                <i class="menu-icon tf-icons bx bx-layout"></i>
+                <div>Cài đặt trang</div>
+            </a>
+
+            <ul class="menu-sub">
+                <li class="menu-item">
+                    <a asp-action="Index" asp-controller="Posters" asp-area="admin" class="menu-link">
+                        <div>Poster</div>
+                    </a>
+                </li>
+            </ul>
+            <ul class="menu-sub">
+                <li class="menu-item">
+                    <a asp-action="Index" asp-controller="Colors" asp-area="admin" class="menu-link">
+                        <div>Color</div>
+                    </a>
+                </li>
+            </ul>
+        </li>
+
+        <li class="menu-header small text-uppercase">
+            <span class="menu-header-text">Quản Lý Ngành Hàng</span>
+        </li>
+        <li class="menu-item">
+            <a href="javascript:void(0);" class="menu-link menu-toggle">
+                <i class="menu-icon tf-icons bx bx-dock-top"></i>
+                <div>Quản Lý Ngành Hàng</div>
+            </a>
+            <ul class="menu-sub">
+                <li class="menu-item">
+                    <a class="menu-link" asp-action="Index" asp-controller="TopCategories" asp-area="admin">
+                        <div>Ngành hàng lớn</div>
+                    </a>
+                </li>
+                <li class="menu-item">
+                    <a class="menu-link" asp-action="Index" asp-controller="MidCategories" asp-area="admin">
+                        <div>Ngành hàng vừa</div>
+                    </a>
+                </li>
+                <li class="menu-item">
+                    <a class="menu-link" asp-action="Index" asp-controller="EndCategories" asp-area="admin">
+                        <div>Ngành hàng nhỏ</div>
+                    </a>
+                </li>
+            </ul>
+        </li>
+        <li class="menu-item">
+            <a href="javascript:void(0);" class="menu-link menu-toggle">
+                <i class="menu-icon tf-icons bx bx-lock-open-alt"></i>
+                <div data-i18n="Authentications">Quản Lý Sản Phẩm</div>
+            </a>
+            <ul class="menu-sub">
+                <li class="menu-item">
+                    <a asp-action="Index" asp-controller="Products" asp-area="admin" class="menu-link">
+                        <div>DS sản phẩm</div>
+                    </a>
+                </li>
+                <li class="menu-item">
+                    <a asp-action="Create" asp-controller="Products" asp-area="admin" class="menu-link">
+                        <div>Thêm sản phẩm</div>
+                    </a>
+                </li>
+            </ul>
+        </li>
+        <!-- Components -->
+        <li class="menu-header small text-uppercase">
+            <span class="menu-header-text">Quản Lý Đơn Hàng</span>
+        </li>
+        <!-- User interface -->
+        <li class="menu-item">
+            <a asp-action="Index" asp-controller="Carts" asp-area="admin" class="menu-link menu-toggle">
+                <i class="menu-icon tf-icons bx bx-box"></i>
+                <div>Đơn Hàng</div>
+            </a>
+            <ul class="menu-sub">
+                <li class="menu-item">
+                    <a href="" class="menu-link">
+                        <div>DS Đơn hàng</div>
+                    </a>
+                </li>
+            </ul>
+        </li>
+        <!-- Forms & Tables -->
+        <li class="menu-header small text-uppercase"><span class="menu-header-text">Quản Lý Khách Hàng</span></li>
+        <!-- Forms -->
+        <li class="menu-item">
+            <a href="javascript:void(0);" class="menu-link menu-toggle">
+                <i class="menu-icon tf-icons bx bx-detail"></i>
+                <div data-i18n="Form Elements">Khách Hàng</div>
+            </a>
+            <ul class="menu-sub">
+                <li class="menu-item">
+                    <a asp-action="Index" asp-controller="Customers" asp-area="admin" class="menu-link">
+                        <div data-i18n="Basic Inputs">DS Khách Hàng</div>
+                    </a>
+                </li>
+            </ul>
+            <ul class="menu-sub">
+                <li class="menu-item">
+                    <a href="" class="menu-link">
+                        <div data-i18n="Basic Inputs">Tin Nhắn KH(chưa có)</div>
+                    </a>
+                </li>
+            </ul>
+        </li>
+        <li class="menu-header small text-uppercase"><span class="menu-header-text">Quản Lý Tài Khoản</span></li>
+        <li class="menu-item">
+            <a href="javascript:void(0);" class="menu-link  menu-toggle">
+                <i class="menu-icon tf-icons bx bx-table"></i>
+                <div data-i18n="Tables">Tài Khoản</div>
+            </a>
+            <ul class="menu-sub">
+                <li class="menu-item">
+                    <a asp-action="Index" asp-controller="Users" asp-area="admin" class="menu-link">
+                        <div data-i18n="Basic Inputs">DS Tài Khoản</div>
+                    </a>
+                </li>
+            </ul>
+        </li>
+        <!-- Tables -->
+        <li class="menu-header small text-uppercase"><span class="menu-header-text">Quản Lý Khuyến Mãi</span></li>
+        <li class="menu-item">
+            <a href="javascript:void(0);" class="menu-link  menu-toggle">
+                <i class="menu-icon tf-icons bx bx-table"></i>
+                <div data-i18n="Tables">Khuyến Mãi</div>
+            </a>
+            <ul class="menu-sub">
+                <li class="menu-item">
+                    <a asp-action="Index" asp-controller="Promotions" asp-area="admin" class="menu-link">
+                        <div data-i18n="Basic Inputs">DS Khuyễn Mãi</div>
+                    </a>
+                </li>
+            </ul>
+            <ul class="menu-sub">
+                <li class="menu-item">
+                    <a asp-action="Create" asp-controller="Promotions" asp-area="admin" class="menu-link">
+                        <div data-i18n="Basic Inputs">Thêm Khuyễn Mãi</div>
+                    </a>
+                </li>
+            </ul>
+        </li>
+    </ul>
+</aside>

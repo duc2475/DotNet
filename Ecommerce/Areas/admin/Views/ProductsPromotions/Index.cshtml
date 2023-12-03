@@ -1,0 +1,130 @@
+﻿@using PagedList.Core.Mvc
+@model PagedList.Core.IPagedList<Ecommerce.Models.TblProductsPromotion>
+
+@{
+    int CurrentPage = ViewBag.CurrentPage;
+    int id = ViewBag.id;
+    TblPromotion promotion = ViewBag.PromoName;
+    ViewData["Title"] = "Index";
+    Layout = "~/Areas/admin/Views/Shared/_AdminLayout.cshtml";
+}
+
+
+<div class="content-wrapper">
+    <!-- Content -->
+
+    <div class="container-xxl flex-grow-1 container-p-y">
+        <h4 class="fw-bold py-3 mb-4"><span class="text-muted fw-light">Quản Lý Khuyến Mãi /</span> Chi Tiết Khuyến Mãi</h4>
+
+        <!-- Basic Bootstrap Table -->
+        <div class="card">
+            <div class="row">
+                <div class="row">
+                    <h5 class="card-header col">Mã Khuyễn Mãi: @id</h5>
+                    <div class="col-2 pt-3">
+                        <a class="btn btn-primary" asp-action="Index" asp-controller="Promotions" asp-area="admin">Back to list</a>
+                    </div>
+                </div>
+                <div class="card-body">
+                    <a class="m-3">Tên Khuyễn Mãi: @promotion.PromoName</a>
+                    <a class="m-3">% Khuyễn Mãi: @promotion.PromoDiscount</a>
+                    <a class="m-3">Ngày Bắt Đầu: @promotion.PromoSdate</a>
+                    <a class="m-3">Ngày Bắt Đầu: @promotion.PromoEdate</a>
+                    <a class="btn btn-primary btn-sm" asp-route-promoid="@promotion.PromoId" asp-action="Create" asp-controller="ProductsPromotions" asp-area="admin">Add Product</a>
+                </div>
+            </div>
+            <div class="row">
+                <h5 class="card-header col">Danh Sách Sản Phẩm: Trang @CurrentPage</h5>
+            </div>
+            <div class="table-responsive text-nowrap">
+                <table class="table">
+                    <thead>
+                        <tr>
+                            <th>ID Sản Phẩm</th>
+                            <th>Tên Sản Phẩm</th>
+                            <th>Hình Ảnh</th>
+                            <th>Giá Bán</th>
+                            <th>Tồn Kho</th>
+                            <th>Trạng Thái</th>
+                            <th>Thao Tác</th>
+                        </tr>
+                    </thead>
+                    <tbody class="table-border-bottom-0">
+                        @if(Model != null)
+                        {
+                            @foreach (var item in Model)
+                            {
+                                <tr>
+                                    <td>@Html.DisplayFor(modelsitem => item.ProductId)</td>
+                                    <td><i class="fab fa-angular fa-lg text-danger me-3"></i> <strong>@Html.DisplayFor(modelsitem => item.Product.ProductName)</strong></td>
+                                    <td>
+                                        <div class="d-flex align-items-center">
+                                            <img class="img-fluid rounded" src="~/assets/img/products/@item.Product.ProductPic" style="max-width: 45px" alt="" />
+                                        </div>
+                                    </td>
+                                    <td>@item.Product.ProductPrice.Value.ToString("#,##0")VNĐ</td>
+                                    <td>@Html.DisplayFor(modelsitem => item.Product.StockQuantity)</td>
+                                    <td>
+                                        @if (item.Product.ProductStatus == "Active")
+                                        {
+                                            <span class="badge badge bg-label-success me-1">Active</span>
+                                        }
+                                        else if (item.Product.ProductStatus == "Hidden")
+                                        {
+                                            <span class="badge bg-label-warning me-1">Hidden</span>
+                                        }
+                                        else
+                                        {
+                                            <span class="badge bg-label-danger me-1">Unactive</span>
+                                        }
+                                    </td>
+                                    <td>
+                                        <form asp-action="Delete" class="col">
+                                            <input type="hidden" name="id" value="@item.PpId" />
+                                            <input type="submit" value="Delete" class="btn btn-outline-danger mt-2" />
+                                        </form>
+                                    </td>
+                                </tr>
+                            }
+                        }
+                        else
+                        {
+                            <div>Khuyễn Mãi Chưa Áp Dụng Mặt Hàng Nào</div>
+                        }
+
+                    </tbody>
+                </table>
+                <div class="demo-inline-spacing ms-lg-5">
+                    <!-- Basic Pagination -->
+                    <nav aria-label="Page navigation">
+                        <ul class="pagination">
+                            <li class="page-item prev">
+                                <form asp-action="Index" asp-area="admin" asp-controller="ProductsPromotions">
+                                    <input type="hidden" name="page" value="@((CurrentPage > 1 ? CurrentPage-1 : 1).ToString())" />
+                                    <input type="hidden" name="id" value="@promotion.PromoId" />
+                                    <button class="page-link" type="submit">
+                                        <i class="tf-icon bx bx-chevron-left"></i>
+                                    </button>
+                                </form>
+                            </li>
+                            <li class="page-item active">
+                                <a class="page-link" href="javascript:void(0);">@CurrentPage</a>
+                            </li>
+                            <li class="page-item next">
+                                <form asp-action="Index" asp-area="admin" asp-controller="ProductsPromotions">
+                                    <input type="hidden" name="page" value="@((CurrentPage < Model.PageCount ? CurrentPage+1 : CurrentPage).ToString())" />
+                                    <input type="hidden" name="id" value="@promotion.PromoId" />
+                                    <button class="page-link" type="submit">
+                                        <i class="tf-icon bx bx-chevron-right"></i>
+                                    </button>
+                                </form>
+                            </li>
+                        </ul>
+                    </nav>
+                    <!--/ Basic Pagination -->
+                </div>
+            </div> 
+        </div>
+    </div>
+</div>
+

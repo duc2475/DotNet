@@ -1,0 +1,56 @@
+﻿@model IEnumerable<Ecommerce.Models.TblPoster>
+
+@{
+    ViewData["Title"] = "Quản lý Poster";
+    Layout = "~/Areas/admin/Views/Shared/_AdminLayout.cshtml";
+}
+<div class="content-wrapper">
+    <!-- Content -->
+
+    <div class="container-xxl flex-grow-1 container-p-y">
+        <h4 class="fw-bold py-3 mb-4"><span class="text-muted fw-light">Quản Lý Trang /</span> Poster</h4>
+
+        <!-- Basic Bootstrap Table -->
+        <div class="card">
+            <div class="row">
+                <h5 class="card-header col">Danh Sách Poster</h5>
+                <div class="col-2 pt-3">
+                    <a asp-action="Create" asp-controller="Posters" asp-area="admin" class="btn btn-primary">Tạo mới</a>
+                </div>
+            </div>
+            <div class="table-responsive text-nowrap">
+                <table class="table">
+                    <thead>
+                        <tr>
+                            <th>ID Poster</th>
+                            <th>Tên Poster</th>
+                            <td>Hình Ảnh</td>
+                            <th>Thao Tác</th>
+                        </tr>
+                    </thead>
+                    <tbody class="table-border-bottom-0">
+                        @foreach (var item in Model)
+                        {
+                            <tr>
+                                <td>@Html.DisplayFor(modelsitem => item.PostId)</td>
+                                <td><i class="fab fa-angular fa-lg text-danger me-3"></i> <strong>@Html.DisplayFor(modelsitem => item.PostTile)</strong></td>
+                                <td>
+                                    <div class="d-flex align-items-center">
+                                        <img class="img-fluid rounded" src="~/assets/img/poster/@item.PostName" style="max-width: 45px" alt="" />
+                                    </div>
+                                </td>
+                                <td class="row">
+                                    <a class="btn btn-sm btn-primary col-3" asp-route-id="@item.PostId" asp-action="Edit" asp-controller="Posters" asp-area="admin">Edit</a>
+                                    <form asp-action="Delete" class="col">
+                                        <input type="hidden" name="id" value="@item.PostId" />
+                                        <input type="submit" value="Delete" class="btn btn-sm btn-outline-danger" />
+                                    </form>
+                                </td>
+                            </tr>
+                        }
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+</div>

@@ -1,0 +1,51 @@
+﻿@model Ecommerce.Models.TblPoster
+
+@{
+    ViewData["Title"] = "Edit";
+    Layout = "~/Areas/admin/Views/Shared/_AdminLayout.cshtml";
+}
+
+<div class="content-wrapper">
+    <!-- Content -->
+
+    <div class="container-xxl flex-grow-1 container-p-y">
+        <h4 class="fw-bold py-3 mb-4"><span class="text-muted fw-light">Quản Lý Trang/</span> Sửa Poster</h4>
+
+        <!-- Basic Layout -->
+        <div class="row">
+            <div class="col-xl">
+                <div class="card mb-4">
+                    <div class="card-header d-flex justify-content-between align-items-center">
+                        <h5 class="mb-0">Sửa Poster</h5>
+                    </div>
+                    <div class="card-body">
+                        <div class="form-group">
+                            <label class="control-label">Hình Ảnh</label>
+                            <img class="img-fluid rounded form-control" src="~/assets/img/poster/@Model.PostName" style="max-width: 100px" alt="" />
+                        </div>
+                        <form asp-action="Edit" method="post" enctype="multipart/form-data">
+                            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+                            <input type="hidden" asp-for="PostId" />
+                            <div class="form-group">
+                                <label asp-for="PostTile" class="control-label"></label>
+                                <input asp-for="PostTile" class="form-control" />
+                            </div>
+                            <div class="form-group">
+                                <label class="control-label"></label>
+                                <input type="file" class="form-control" for="PostPic" id="PostPic" name="PostPic" />
+                            </div>
+                            <div class="row">
+                                <div class="form-group pt-4 col">
+                                    <input type="submit" action="Edit" class="btn btn-primary" />
+                                </div>
+                                <div class="form-group pt-4 col-2">
+                                    <a asp-action="Index" asp-controller="Posters" asp-area="admin" class="btn btn-primary">Back to list</a>
+                                </div>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

@@ -1,0 +1,59 @@
+﻿@model Ecommerce.Models.TblPromotion
+
+@{
+    ViewData["Title"] = "Create";
+    Layout = "~/Areas/admin/Views/Shared/_AdminLayout.cshtml";
+}
+
+<div class="content-wrapper">
+    <!-- Content -->
+
+    <div class="container-xxl flex-grow-1 container-p-y">
+        <h4 class="fw-bold py-3 mb-4"><span class="text-muted fw-light">Quản Lý Khuyến Mãi/</span> Thêm Khuyến Mãi</h4>
+
+        <!-- Basic Layout -->
+        <div class="row">
+            <div class="col-xl">
+                <div class="card mb-4">
+                    <div class="card-header d-flex justify-content-between align-items-center">
+                        <h5 class="mb-0">Thêm Khuyến Mãi Mới</h5>
+                    </div>
+                    <div class="card-body">
+                        <form asp-action="Create">
+                            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+                            <div class="form-group">
+                                <label asp-for="PromoName" class="control-label">Tên Khuyến Mãi</label>
+                                <input asp-for="PromoName" class="form-control" />
+                                <span asp-validation-for="PromoName" class="text-danger"></span>
+                            </div>
+                            <div class="form-group">
+                                <label asp-for="PromoDiscount" class="control-label"></label>
+                                <input asp-for="PromoDiscount" class="form-control" />
+                                <span asp-validation-for="PromoDiscount" class="text-danger"></span>
+                            </div>
+                            <div class="form-group">
+                                <label asp-for="PromoSdate" class="control-label"></label>
+                                <input asp-for="PromoSdate" class="form-control" type="date"/>
+                                <span asp-validation-for="PromoSdate" class="text-danger"></span>
+                            </div>
+                            <div class="form-group">
+                                <label asp-for="PromoEdate" class="control-label"></label>
+                                <input asp-for="PromoEdate" class="form-control" type="date"/>
+                                <span asp-validation-for="PromoEdate" class="text-danger"></span>
+                            </div>
+                            <div class="row">
+                                <div class="form-group pt-4 col">
+                                    <input type="submit" value="Create" class="btn btn-primary" />
+                                </div>
+                                <div class="form-group pt-4 col-2">
+                                    <a asp-action="Index" asp-controller="Promotions" asp-area="admin" class="btn btn-primary">Back to list</a>
+                                </div>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+

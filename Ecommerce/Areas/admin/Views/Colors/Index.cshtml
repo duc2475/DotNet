@@ -1,0 +1,57 @@
+﻿@model IEnumerable<Ecommerce.Models.TblColor>
+
+@{
+    ViewData["Title"] = "Index";
+    Layout = "~/Areas/admin/Views/Shared/_AdminLayout.cshtml";
+}
+
+<div class="content-wrapper">
+    <!-- Content -->
+
+    <div class="container-xxl flex-grow-1 container-p-y">
+        <h4 class="fw-bold py-3 mb-4"><span class="text-muted fw-light">Quản Lý Màu Sắc /</span> Danh Sách Màu Sắc</h4>
+
+        <!-- Basic Bootstrap Table -->
+        <div class="card">
+            <div class="row">
+                <h5 class="card-header col">Danh Sách Màu Sắc</h5>
+                <div class="col-2 pt-3">
+                    <a asp-action="Create" asp-controller="Colors" asp-area="admin" class="btn btn-primary">Tạo mới</a>
+                </div>
+            </div>
+            <div class="table-responsive text-nowrap">
+                <table class="table">
+                    <thead>
+                        <tr>
+                            <th>ID Màu</th>
+                            <th>Tên Màu</th>
+                            <th>Màu</th>
+                            <th>Thao Tác</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @foreach (var item in Model)
+                        {
+                            <tr>
+                                <td>
+                                    @Html.DisplayFor(modelItem => item.ColorId)
+                                </td>
+                                <td>
+                                    @Html.DisplayFor(modelItem => item.ColorName)
+                                </td>
+                                <td><div class="rounded-circle" style="background-color:@item.ColorName; width: 25px; height: 25px;"></div></td>
+                                <td class="row">
+                                    <a class="btn btn-sm btn-primary col-3" asp-route-id="@item.ColorId" asp-action="Edit" asp-controller="Colors" asp-area="admin">Edit</a>
+                                    <form asp-action="Delete" class="col">
+                                        <input type="hidden" name="id" value="@item.ColorId" />
+                                        <input type="submit" value="Delete" class="btn btn-sm btn-outline-danger" />
+                                    </form>
+                                </td>
+                            </tr>   
+                        }
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+</div>

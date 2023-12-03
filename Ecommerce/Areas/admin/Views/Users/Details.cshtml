@@ -1,0 +1,62 @@
+﻿@model Ecommerce.Models.TblUser
+
+@{
+    ViewData["Title"] = "Details";
+    Layout = "~/Areas/admin/Views/Shared/_AdminLayout.cshtml";
+}
+
+<div class="content-wrapper">
+    <!-- Content -->
+
+    <div class="container-xxl flex-grow-1 container-p-y">
+        <h4 class="fw-bold py-3 mb-4"><span class="text-muted fw-light">Quản Lý Tài Khoản/</span> Xem Thông tin Tài Khoản</h4>
+
+        <!-- Basic Layout -->
+        <div class="row">
+            <div class="col-xl">
+                <div class="card mb-4">
+                    <div class="card-header d-flex justify-content-between align-items-center">
+                        <h5 class="mb-0">Thông Tin Tài Khoản</h5>
+                    </div>
+                    <div class="card-body">
+                        <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+                        <input asp-for="UserId" type="hidden" />
+                        <input asp-for="UserPhoto" type="hidden" />
+                        <div class="form-group">
+                            <label asp-for="UserName" class="control-label">Tên Tài Khoản</label>
+                            <input asp-for="UserName" class="form-control" readonly />
+                            <span asp-validation-for="UserName" class="text-danger"></span>
+                        </div>
+                        <div class="form-group">
+                            <label class="control-label">Hình Ảnh Sản Phẩm</label>
+                            <img class="img-fluid rounded form-control" src="~/assets/img/users/@Model.UserPhoto" style="max-width: 150px" alt="" />
+                        </div>
+                        <div class="form-group">
+                            <label asp-for="UserPhone" class="control-label">Số Điện Thoại</label>
+                            <input asp-for="UserPhone" class="form-control" readonly />
+                        </div>
+                        <div class="form-group">
+                            <label asp-for="UserEmail" class="control-label">Email</label>
+                            <input asp-for="UserEmail" class="form-control" readonly />
+                            <span asp-validation-for="UserEmail" class="text-danger"></span>
+                        </div>
+                        <div class="form-group">
+                            <label asp-for="UserRole" class="control-label">Ngành Hàng</label>
+                            <input asp-for="UserRole" class="form-control" readonly />
+                        </div>
+                        <div class="form-group">
+                            <label asp-for="UserStatus" class="control-label">Mô Tả Sản Phẩm</label>
+                            <input asp-for="UserStatus" class="form-control" readonly />
+                            <span asp-validation-for="UserStatus" class="text-danger"></span>
+                        </div>
+                        <div class="row">
+                            <div class="form-group pt-4 col">
+                                <a asp-action="Index" asp-controller="Users" asp-area="admin" class="btn btn-primary">Back to list</a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
