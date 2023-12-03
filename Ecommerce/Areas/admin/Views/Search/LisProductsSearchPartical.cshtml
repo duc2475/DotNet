@@ -1,0 +1,41 @@
+﻿@model List<TblProduct>
+
+@if (Model != null)
+{
+    @foreach (var item in Model)
+                        {
+                            <tr>
+                                <td>@Html.DisplayFor(modelsitem => item.ProductId)</td>
+                                <td><i class="fab fa-angular fa-lg text-danger me-3"></i> <strong>@Html.DisplayFor(modelsitem => item.ProductName)</strong></td>
+                                <td>
+                                    <div class="d-flex align-items-center">
+                                        <img class="img-fluid rounded" src="~/assets/img/products/@item.ProductPic" style="max-width: 45px" alt="" />
+                                    </div>
+                                </td>
+                                <td>@item.ProductPrice.Value.ToString("#,##0")VNĐ</td>
+                                <td>@Html.DisplayFor(modelsitem => item.StockQuantity)</td>
+                                <td>
+                                    @if (item.ProductStatus == "Active")
+                                    {
+                                        <span class="badge badge bg-label-success me-1">Active</span>
+                                    }
+                                    else if (item.ProductStatus == "Hidden")
+                                    {
+                                        <span class="badge bg-label-warning me-1">Hidden</span>
+                                    }
+                                    else
+                                    {
+                                        <span class="badge bg-label-danger me-1">Unactive</span>
+                                    }
+                                </td>
+                                <td class="row">
+                                    <a class="btn btn-outline-primary col-3 mt-2" asp-route-id="@item.ProductId" asp-action="Details" asp-controller="Products" asp-area="admin"> Details</a>
+                                    <a class="btn btn-outline-warning col-3 ms-3 mt-2" asp-route-id="@item.ProductId" asp-action="Edit" asp-controller="Products" asp-area="admin">Edit</a>
+                                    <form asp-action="Delete" class="col">
+                                        <input type="hidden" name="id" value="@item.ProductId" />
+                                        <input type="submit" value="Delete" class="btn btn-outline-danger mt-2" />
+                                    </form>
+                                </td>
+                            </tr>
+                        }
+}

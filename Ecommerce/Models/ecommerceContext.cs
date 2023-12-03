@@ -356,6 +356,10 @@ namespace Ecommerce.Models
 
                 entity.Property(e => e.ProductPrice).HasColumnName("product_price");
 
+                entity.Property(e => e.ProductSeo)
+                    .HasMaxLength(255)
+                    .HasColumnName("product_seo");
+
                 entity.Property(e => e.ProductStatus)
                     .HasMaxLength(100)
                     .HasColumnName("product_status");

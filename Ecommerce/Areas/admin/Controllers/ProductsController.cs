@@ -7,6 +7,7 @@ using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using Ecommerce.Models;
 using PagedList.Core;
+using AspNetCoreHero.ToastNotification.Abstractions;
 
 namespace Ecommerce.Areas.admin.Controllers
 {
@@ -17,10 +18,13 @@ namespace Ecommerce.Areas.admin.Controllers
 
         private readonly IWebHostEnvironment _hostEnviroment;
 
-        public ProductsController(ecommerceContext context, IWebHostEnvironment hostEnviroment)
+        public INotyfService _notyfService { get; }
+
+        public ProductsController(ecommerceContext context, IWebHostEnvironment hostEnviroment, INotyfService notyfService)
         {
             _context = context;
             _hostEnviroment = hostEnviroment;
+            _notyfService = notyfService;
         }
 
         // GET: admin/Products
@@ -77,12 +81,14 @@ namespace Ecommerce.Areas.admin.Controllers
                 string extension = Path.GetExtension(file.FileName);
                 tblProduct.ProductPic = fileName;
                 string path = Path.Combine(wwwRootPath + "/assets/img/products/", fileName);
+                tblProduct.ProductSeo = Extention.Extention.ToUrlFriendly(tblProduct.ProductName);
                 using (var fileStream = new FileStream(path, FileMode.Create))
                 {
                     await file.CopyToAsync(fileStream);
                 }
                 _context.Add(tblProduct);
                 await _context.SaveChangesAsync();
+                _notyfService.Success("Thêm mới thành công");
                 return RedirectToAction(nameof(Index));
             }
             ViewData["EcatId"] = new SelectList(_context.TblEndCategories, "EcatId", "EcatName", tblProduct.EcatId.ToString());
@@ -127,12 +133,14 @@ namespace Ecommerce.Areas.admin.Controllers
                 string extension = Path.GetExtension(file.FileName);
                 tblProduct.ProductPic = fileName;
                 string path = Path.Combine(wwwRootPath + "/assets/img/products/", fileName);
+                tblProduct.ProductSeo = Extention.Extention.ToUrlFriendly(tblProduct.ProductName);
                 using (var fileStream = new FileStream(path, FileMode.Create))
                 {
                     await file.CopyToAsync(fileStream);
                 }
                 _context.Update(tblProduct);
                 await _context.SaveChangesAsync();
+                _notyfService.Success("Sửa thành công");
             }else 
             {
                 try
@@ -193,6 +201,7 @@ namespace Ecommerce.Areas.admin.Controllers
             }
             
             await _context.SaveChangesAsync();
+            _notyfService.Success("Xoá thành công");
             return RedirectToAction(nameof(Index));
         }
 

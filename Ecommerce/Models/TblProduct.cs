@@ -21,6 +21,7 @@ namespace Ecommerce.Models
         public string? ProductDes { get; set; }
         public string? ProductStatus { get; set; }
         public int? ProductPrice { get; set; }
+        public string? ProductSeo { get; set; }
 
         public virtual TblEndCategory Ecat { get; set; } = null!;
         public virtual ICollection<TblCartDetail> TblCartDetails { get; set; }
