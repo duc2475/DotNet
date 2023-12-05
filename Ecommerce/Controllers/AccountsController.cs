@@ -158,6 +158,10 @@ namespace Ecommerce.Controllers
 						ClaimsPrincipal claimsPrincipal = new ClaimsPrincipal(claimsIdentity);
 						await HttpContext.SignInAsync(claimsPrincipal);
 						_notyfService.Success("Đăng Nhập Thành Công!");
+						if(user.UserRole == "admin")
+						{
+							return Redirect("/admin");
+						}
 						return RedirectToAction("Index", "Home");
 					}
 				}

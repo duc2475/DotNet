@@ -1,0 +1,119 @@
+﻿@model Ecommerce.Models.TblUserCustomer
+
+@{
+    ViewData["Title"] = "Check out";
+    List<Ecommerce.ModelsView.CartItem> carts = ViewBag.Cart;
+}
+<div class="content-wrapper">
+
+    <div class="container-xxl flex-grow-1 container-p-y py-5">
+        <!-- Basic Layout -->
+        <div class="row">
+            <div class="col-md-6">
+                <div class="card mb-4">
+                    <h5 class="text" style="text-align:center">Thông Tin Địa Chỉ Giao Hàng</h5>
+                    <div class="card-body">
+                        <div class="form-group m-2">
+                            <label class="control-label">Tên Người Gửi</label>
+                            <input name="CustName" value="@Model.Cust.CustName" class="form-control" readonly/>
+                        </div>
+                        <div class="form-group m-2">
+                            <label class="control-label">Họ</label>
+                            <input name="CustLname" value="@Model.Cust.CustLname" class="form-control" readonly />
+                        </div>
+                        <div class="form-group m-2">
+                            <label class="control-label">Email</label>
+                            <input name="CustEmail" value="@Model.Cust.CustEmail" class="form-control" readonly />
+                        </div>
+                        <div class="form-group m-2">
+                            <label class="control-label">Số Điện Thoại</label>
+                            <input name="CustPhone" value="@Model.Cust.CustPhone" class="form-control" readonly />
+                        </div>
+                        <div class="form-group m-2">
+                            <label class="control-label">Địa Chỉ</label>
+                            <input name="CustAddress" value="@Model.Cust.CustAddress" class="form-control" readonly />
+                        </div>
+                        <div class="form-group m-2">
+                            <label class="control-label">Thành Phố</label>
+                            <input name="CustCity" value="@Model.Cust.CustCity" class="form-control" readonly />
+                        </div>
+                        <div class="form-group m-2">
+                            <label class="control-label">Nước</label>
+                            <input name="CustSate" value="@Model.Cust.CustSate" class="form-control" readonly />
+                        </div>
+                        <div class="form-group m-2">
+                            <label class="control-label">Zip Code</label>
+                            <input name="CustZip" value="@Model.Cust.CustZip" class="form-control" readonly />
+                        </div>
+                        <div class="form-group m-2">
+                            <label class="control-label">Ngày Sinh</label>
+                            <input name="CustDatetime" value="@Model.Cust.CustDatetime" type="date" class="form-control" readonly />
+                        </div>
+                        <div class="form-group m-2">
+                            <label class="control-label">Trạng Thái</label>
+                            <select name="CustStatus" class="form-control">
+                                <option value="0">Active</option>
+                                <option value="1">Unactive</option>
+                            </select>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-6">
+                <div class="card mb-4">
+                    <h5 class="text" style="text-align:center">Thông Tin Đơn Hàng</h5>
+                    <table class="table table-striped">
+                        <thead>
+                            <tr>
+                                <th>Số Lượng</th>
+                                <th>Sản Phẩm</th>
+                                <th>Đơn Giá</th>
+                                <th>Tổng Cộng</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            @foreach (var item in carts){
+                                <tr>
+                                    <td>@item.amount</td>
+                                    <td>@item.Product.ProductName</td>
+                                    <td>@item.Product.ProductPrice.Value.ToString("#,##0")VNĐ</td>
+                                    <td>@item.totalMoney.ToString("#,##0")VNĐ</td>
+                                </tr>
+                            }
+                        </tbody>
+                    </table>
+                    <!-- total -->
+                    <div class="row">
+                        <!-- accepted payments column -->
+                        <div class="col-6">
+                            <p class="lead">Phương Thức Thanh Toán:</p>
+                            <img src="visa.png" alt="Visa">
+                            <img src="mastercard.png" alt="Mastercard">
+                            <img src="american-express.png" alt="American Express">
+                            <a>
+                                <i class='bx bxl-paypal' style="max-width: 100px">PayPal</i>
+                            </a>
+                           
+                           
+                        </div>
+                        <!-- total column -->
+                        <div class="col-6">
+                            <p class="lead">Tổng Cộng:</p>
+                            <div class="table-responsive">
+                                <table class="table">
+                                    <tr>
+                                        <th style="width:50%">Tạm Tính:</th>
+                                        <td>@carts.Sum(x => x.totalMoney).ToString("#,##0")VNĐ</td>
+                                    </tr>
+                                    <tr>
+                                        <th>Tổng Cộng:</th>
+                                        <td>@carts.Sum(x => x.totalMoney).ToString("#,##0")VNĐ</td>
+                                    </tr>
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+    </div>
+</div>

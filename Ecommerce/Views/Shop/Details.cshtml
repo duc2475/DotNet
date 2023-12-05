@@ -16,20 +16,50 @@
             @{
                 if(Model.StockQuantity > 0)
                 {
-                    <h4 class="text-success mt-3">Tồn Kho: @Model.StockQuantity</h4>
+                                                                <h4 class="text-success mt-3">Tồn Kho: @Model.StockQuantity</h4>
                 }
                 else
                 {
-                    <h4 class="text-danger mt-3">Tồn Kho: @Model.StockQuantity</h4>
+                                                                <h4 class="text-danger mt-3">Tồn Kho: @Model.StockQuantity</h4>
                 }
             }
             <h5 class="text-primary">Ngành Hàng: @Model.Ecat.EcatName</h5>
             
             <div class="row">
-                <input type="number" max="@Model.StockQuantity" class="col-md-3" style="border:none; text-align:center"/>
-                <a href="#" class="btn btn-primary col-md-3 ms-5">Buy Now</a>
+                <input type="number" id="txtsoLuong" name="txtsoLuong" max="@Model.StockQuantity" class="col-md-3" style="border:none; text-align:center" />
+                <a class="add-to-cart btn btn-primary col-md-3 ms-5">Buy Now</a>
+                <input type="hidden" asp-for="ProductId"/>
             </div>
             <p class="text-muted mt-3">@Model.ProductDes</p>
         </div>
     </div>
 </div>
+
+@section Scripts{
+    <script>
+        $(document).ready(function () {
+            $(".add-to-cart").click(function () {
+                var productid = $('#ProductId').val();
+                var soLuong = $('#txtsoLuong').val();
+                $.ajax({
+                    url: '/api/cart/add',
+                    type: "POST",
+                    dataType: "JSON",
+                    data: {
+                        productId: productid,
+                        amount: soLuong
+                    },
+                    success: function (response) { 
+                        if (response.result == 'Redirect') {
+                            window.location = response.url;
+                        }
+                        console.log(reponse);
+                    },
+                    error: function (erro) { 
+                        alert("Có một lỗi posting dữ liệu lên csdl: " + erro.responseText);
+                    }
+                });
+            });
+        });
+    </script>
+}

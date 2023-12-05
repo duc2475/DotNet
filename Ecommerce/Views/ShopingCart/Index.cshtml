@@ -1,0 +1,181 @@
+﻿@model List<Ecommerce.ModelsView.CartItem>
+@{
+    ViewData["Title"] = "Giỏ Hàng";
+}
+
+<!-- Start Hero Section -->
+			<div class="hero">
+				<div class="container">
+					<div class="row justify-content-between">
+						<div class="col-lg-5">
+							<div class="intro-excerpt">
+								<h1>Giỏ Hàng</h1>
+							</div>
+						</div>
+						<div class="col-lg-7">
+							
+						</div>
+					</div>
+				</div>
+			</div>
+		<!-- End Hero Section -->
+
+		
+
+		<div class="untree_co-section before-footer-section">
+            <div class="container">
+              <div class="row mb-5">
+                @if(Model != null && Model.Count() > 0)
+                {
+                    <form class="col-md-12" method="post">
+                        <div class="site-blocks-table">
+                            <table class="table">
+                                <thead>
+                                    <tr>
+                                        <th class="product-thumbnail">Hình ảnh</th>
+                                        <th class="product-name">Sản phẩm</th>
+                                        <th class="product-price">Giá</th>
+                                        <th class="product-quantity">Số Lượng</th>
+                                        <th class="product-total">Thành Tiền</th>
+                                        <th class="product-remove">Xoá</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    @if (Model != null && Model.Count() > 0)
+                                    {
+                                        foreach (var item in Model)
+                                        {
+                                            <tr>
+                                                <td class="product-thumbnail">
+                                                    <img src="~/assets/img/products/@item.Product.ProductPic" alt="Image" class="img-fluid" />
+                                                </td>
+                                                <td class="product-name">
+                                                    <h2 class="h5 text-black">@item.Product.ProductName</h2>
+                                                </td>
+                                                <td>@item.Product.ProductPrice.Value.ToString("#,##0") VNĐ</td>
+                                                <td>
+                                                    <div class="input-group mb-3 d-flex align-items-center quantity-container" style="max-width: 120px;">
+                                                 
+                                                        <input type="number" class="cartItem form-control text-center quantity-amount" data-mahh="@item.Product.ProductId" value="@item.amount" aria-label="Example text with button addon" aria-describedby="button-addon1">
+
+                                                        <input type="hidden" name="productid" id="productid" data-mahh="@item.Product.ProductId" />
+                                                       
+                                                    </div>
+
+                                                </td>
+                                                <td>@((item.Product.ProductPrice.Value * item.amount).ToString("#,##0")) VNĐ</td>
+                                            <td><input type="button" class="removeItem btn btn-primary btn-sm" data-mahh="@item.Product.ProductId" value="X"/></td>
+                                            </tr>
+                                        }
+                                    }
+                                </tbody>
+                            </table>
+                        </div>
+                    </form>
+                }
+                else
+                {
+                    <p>Chưa có sản phẩm trong giỏ hàng</p>
+                }
+           
+              </div>
+        
+              <div class="row">
+                <div class="col-md-6">
+                  <div class="row mb-5">
+                    <div class="col-md-6">
+                        <a type="button" href="/shop.html" class="btn btn-outline-black btn-sm btn-block">Tiếp Tục Mua Hàng</a>
+                    </div>
+                  </div>
+                </div>
+                <div class="col-md-6 pl-5">
+                  <div class="row justify-content-end">
+                    <div class="col-md-7">
+                      <div class="row">
+                        <div class="col-md-12 text-right border-bottom mb-5">
+                          <h3 class="text-black h4 text-uppercase">Giá Trị Giỏ Hàng</h3>
+                        </div>
+                      </div>
+                      <div class="row mb-3">
+                        <div class="col-md-6">
+                          <span class="text-black">Thành Tiền</span>
+                        </div>
+                        <div class="col-md-6 text-right">
+                                <strong class="text-black">@Model.Sum(x => x.totalMoney).ToString("#,##0") VNĐ</strong>
+                        </div>
+                      </div>
+                      <div class="row mb-5">
+                        <div class="col-md-6">
+                          <span class="text-black">Sau Chiết Khấu</span>
+                        </div>
+                        <div class="col-md-6 text-right">
+                                <strong class="text-black">@Model.Sum(x => x.totalMoney).ToString("#,##0") VNĐ</strong>
+                        </div>
+                      </div>
+                        @if (User.Identity.IsAuthenticated)
+                        {
+                            <div class="row">
+                                <div class="col-md-12">
+                                    <a type="button" class="btn btn-black btn-lg py-3 btn-block ms-4" href="/checkout.html">Thanh Toán</a>
+                                </div>
+                            </div>
+                        }
+                        else
+                        {
+                            <div class="row">
+                                <div class="col-md-12">
+                                    <a type="button" class="btn btn-black btn-lg py-3 btn-block ms-4" href="/dang-nhap.html?returnUrl=/checkout.html">Thanh Toán</a>
+                                </div>
+                            </div>
+                        } 
+
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+@section Scripts{
+    <script>
+        $(function () {
+            $(".cartItem").click(function () {
+                var productid = $(this).attr("data-mahh");
+                var soluong = parseInt($(this).val());
+                $.ajax({
+                    url: "api/cart/update",
+                    type: "POST",
+                    datatype: "JSON",
+                    data: {
+                        productId: productid,
+                        amount: soluong
+                    },
+                    success: function (result) {
+                        if (result.success) {
+                            window.location = "cart.html";
+                        }
+                    },
+                    error: function (rs) {
+                        alert("cập nhật số lượng lỗi")
+                    }
+                });
+            });
+            $(".removeItem").click(function () {
+                var productid = $(this).attr("data-mahh");
+                $.ajax({
+                    url: "api/cart/remove",
+                    type: "POST",
+                    datatype: "JSON",
+                    data: { productId: productid },
+                    success: function (result) {
+                        if (result.success) {
+                            window.location = "cart.html";
+                        }
+                    },
+                    error: function (rs) {
+                        alert("cập nhật lỗi")
+                    }
+                });
+            });
+        });
+    </script>
+}
