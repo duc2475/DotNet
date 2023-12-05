@@ -9,6 +9,7 @@ namespace Ecommerce.Models
         {
             TblCarts = new HashSet<TblCart>();
             TblOrders = new HashSet<TblOrder>();
+            TblUserCustomers = new HashSet<TblUserCustomer>();
         }
 
         public int CustId { get; set; }
@@ -25,5 +26,6 @@ namespace Ecommerce.Models
 
         public virtual ICollection<TblCart> TblCarts { get; set; }
         public virtual ICollection<TblOrder> TblOrders { get; set; }
+        public virtual ICollection<TblUserCustomer> TblUserCustomers { get; set; }
     }
 }

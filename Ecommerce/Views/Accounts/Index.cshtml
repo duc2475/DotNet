@@ -1,0 +1,135 @@
+﻿@model Ecommerce.Models.TblUser
+
+@{
+    ViewData["Title"] = "Index";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+    TblUser user = Model;
+    TblCustomer cust= ViewBag.DiaChi;
+}
+
+<div class="content-wrapper">
+
+    <div class="container-xxl flex-grow-1 container-p-y py-5">
+        <!-- Basic Layout -->
+        <div class="row">
+            <div class="col-md-6">
+                <div class="card mb-4">
+                    @await Html.PartialAsync("_UserDetailsPartialView", user)
+                </div>
+            </div>
+            <div class="col-md-6">
+                <div class="card mb-4">
+                    <h5 class="text" style="text-align:center">Thông Tin Địa Chỉ Giao Hàng</h5>
+                    @{
+                        if(cust == null)
+                        {
+                            <form asp-action="Address">
+                                <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+                                <input type="hidden" value="@Model.UserId" name="id"/>
+                                <div class="form-group m-2">
+                                    <label class="control-label">Tên Người Gửi</label>
+                                    <input name="CustName" class="form-control" />
+                                </div>
+                                <div class="form-group m-2">
+                                    <label  class="control-label">Họ</label>
+                                    <input name="CustLname" class="form-control" />
+                                </div>
+                                <div class="form-group m-2">
+                                    <label  class="control-label">Email</label>
+                                    <input name="CustEmail" class="form-control" />
+                                </div>
+                                <div class="form-group m-2">
+                                    <label  class="control-label">Số Điện Thoại</label>
+                                    <input name="CustPhone" class="form-control" />
+                                </div>
+                                <div class="form-group m-2">
+                                    <label  class="control-label">Địa Chỉ</label>
+                                    <input name="CustAddress" class="form-control" />
+                                </div>
+                                <div class="form-group m-2">
+                                    <label class="control-label">Thành Phố</label>
+                                    <input name="CustCity" class="form-control" />
+                                </div>
+                                <div class="form-group m-2">
+                                    <label  class="control-label">Nước</label>
+                                    <input name="CustSate" class="form-control" />
+                                </div>
+                                <div class="form-group m-2">
+                                    <label  class="control-label">Zip Code</label>
+                                    <input name="CustZip" class="form-control" />
+                                </div>
+                                <div class="form-group m-2">
+                                    <label  class="control-label">Ngày Sinh</label>
+                                    <input name="CustDatetime" type="date" class="form-control" />
+                                </div>
+                                <div class="form-group m-2">
+                                    <label  class="control-label">Trạng Thái</label>
+                                    <select name="CustStatus" class="form-control">
+                                        <option value="0">Active</option>
+                                        <option value="1">Unactive</option>
+                                    </select>
+                                </div>
+                                <div class="form-group">
+                                    <input type="submit" value="Create" class="btn btn-primary" />
+                                </div>
+                            </form>
+                        }
+                        else
+                        {
+                            <form asp-action="FixAddress">
+                                <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+                                <input type="hidden" value="@Model.UserId" name="id" />
+                                <div class="form-group m-2">
+                                    <label class="control-label">Tên Người Gửi</label>
+                                    <input name="CustName" value="@cust.CustName" class="form-control" />
+                                </div>
+                                <div class="form-group m-2">
+                                    <label class="control-label">Họ</label>
+                                    <input name="CustLname" value="@cust.CustLname" class="form-control" />
+                                </div>
+                                <div class="form-group m-2">
+                                    <label class="control-label">Email</label>
+                                    <input name="CustEmail" value="@cust.CustEmail" class="form-control" />
+                                </div>
+                                <div class="form-group m-2">
+                                    <label class="control-label">Số Điện Thoại</label>
+                                    <input name="CustPhone" value="@cust.CustPhone" class="form-control" />
+                                </div>
+                                <div class="form-group m-2">
+                                    <label class="control-label">Địa Chỉ</label>
+                                    <input name="CustAddress" value="@cust.CustAddress" class="form-control" />
+                                </div>
+                                <div class="form-group m-2">
+                                    <label class="control-label">Thành Phố</label>
+                                    <input name="CustCity" value="@cust.CustCity" class="form-control" />
+                                </div>
+                                <div class="form-group m-2">
+                                    <label class="control-label">Nước</label>
+                                    <input name="CustSate" value="@cust.CustSate" class="form-control" />
+                                </div>
+                                <div class="form-group m-2">
+                                    <label class="control-label">Zip Code</label>
+                                    <input name="CustZip" value="@cust.CustZip" class="form-control" />
+                                </div>
+                                <div class="form-group m-2">
+                                    <label class="control-label">Ngày Sinh</label>
+                                    <input name="CustDatetime" value="@cust.CustDatetime" type="date" class="form-control" />
+                                </div>
+                                <div class="form-group m-2">
+                                    <label class="control-label">Trạng Thái</label>
+                                    <select name="CustStatus" class="form-control">
+                                        <option value="0">Active</option>
+                                        <option value="1">Unactive</option>
+                                    </select>
+                                </div>
+                                <div class="form-group m-3">
+                                    <input type="submit" value="Save" class="btn btn-primary" />
+                                </div>
+                            </form>
+                        }
+                    }
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

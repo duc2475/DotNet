@@ -1,0 +1,35 @@
+﻿@model Ecommerce.Models.TblProduct
+
+@{
+    ViewData["Title"] = "Details";
+}
+
+<div class="container py-lg-5">
+    <h1 class="text-center m-5">Thông Tin Chi Tiết Sản Phẩm</h1>
+    <div class="row">
+        <div class="col-md-5 m-0">
+            <img src="~/assets/img/products/@Model.ProductPic" alt="Product Image" class="img-fluid">
+        </div>
+        <div class="col-md-5 ms-1">
+            <h2 class="text-primary">@Model.ProductName - @Model.Color</h2>
+            <h3 class="text-success mt-3">@Model.ProductPrice.Value.ToString("#,##0") VNĐ</h3>
+            @{
+                if(Model.StockQuantity > 0)
+                {
+                    <h4 class="text-success mt-3">Tồn Kho: @Model.StockQuantity</h4>
+                }
+                else
+                {
+                    <h4 class="text-danger mt-3">Tồn Kho: @Model.StockQuantity</h4>
+                }
+            }
+            <h5 class="text-primary">Ngành Hàng: @Model.Ecat.EcatName</h5>
+            
+            <div class="row">
+                <input type="number" max="@Model.StockQuantity" class="col-md-3" style="border:none; text-align:center"/>
+                <a href="#" class="btn btn-primary col-md-3 ms-5">Buy Now</a>
+            </div>
+            <p class="text-muted mt-3">@Model.ProductDes</p>
+        </div>
+    </div>
+</div>

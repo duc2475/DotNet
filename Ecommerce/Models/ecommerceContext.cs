@@ -509,22 +509,22 @@ namespace Ecommerce.Models
 
             modelBuilder.Entity<TblUserCustomer>(entity =>
             {
-                entity.HasNoKey();
-
                 entity.ToTable("tbl_user_customer");
+
+                entity.Property(e => e.Id).HasColumnName("id");
 
                 entity.Property(e => e.CustId).HasColumnName("cust_id");
 
                 entity.Property(e => e.UserId).HasColumnName("user_id");
 
                 entity.HasOne(d => d.Cust)
-                    .WithMany()
+                    .WithMany(p => p.TblUserCustomers)
                     .HasForeignKey(d => d.CustId)
                     .OnDelete(DeleteBehavior.ClientSetNull)
                     .HasConstraintName("fk_cust_user");
 
                 entity.HasOne(d => d.User)
-                    .WithMany()
+                    .WithMany(p => p.TblUserCustomers)
                     .HasForeignKey(d => d.UserId)
                     .OnDelete(DeleteBehavior.ClientSetNull)
                     .HasConstraintName("fk_user_cust");

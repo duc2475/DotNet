@@ -11,7 +11,7 @@ namespace Ecommerce.Areas.admin.Controllers
 
         public SearchController(ecommerceContext context)
         {
-            _context = context;
+			_context = context;
         }
         [HttpPost]
         public IActionResult FindProduct(string keyword)
