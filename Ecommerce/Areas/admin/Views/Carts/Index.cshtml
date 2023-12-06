@@ -1,0 +1,53 @@
+﻿@model IEnumerable<Ecommerce.Models.TblCart>
+
+@{
+    ViewData["Title"] = "Index";
+    Layout = "~/Areas/admin/Views/Shared/_AdminLayout.cshtml";
+    
+}
+
+
+<div class="content-wrapper">
+    <!-- Content -->
+
+    <div class="container-xxl flex-grow-1 container-p-y">
+        <h4 class="fw-bold py-3 mb-4"><span class="text-muted fw-light">Quản Lý Đơn Hàng /</span> DS Đơn Hàng</h4>
+
+        <!-- Basic Bootstrap Table -->
+        <div class="card">
+            <div class="row">
+                <h5 class="card-header col">Danh Sách Đơn Hàng</h5>
+            </div>
+            <div class="table-responsive text-nowrap">
+                <table class="table">
+                    <thead>
+                        <tr>
+                            <th>ID Khách Hàng</th>
+                            <th>Tên Khách Hàng</th>
+                            <th>Tổng Tiền</th>
+                            <th>Ngày Đặt Hàng</th>
+                            <th>Thao Tác</th>
+                        </tr>
+                    </thead>
+                    <tbody class="table-border-bottom-0">
+                        @foreach (var item in Model)
+                        {
+                            <tr>
+                                <td>@Html.DisplayFor(modelsitem => item.Cust.CustId)</td>
+                                <td><i class="fab fa-angular fa-lg text-danger me-3"></i> <strong>@Html.DisplayFor(modelsitem => item.Cust.CustLname)</strong></td>
+                                <td>
+                                    @Html.DisplayFor(modelsitem => item.TotalPrice) VNĐ
+                                </td>
+                                <td>@Html.DisplayFor(modelsitem => item.CartDate)</td>
+                                <td class="row">
+                                    <a class="btn btn-sm btn-primary col-4" asp-route-id="@item.CartId" asp-action="Details" asp-controller="Carts" asp-area="admin">Details</a>
+                                    
+                                </td>
+                            </tr>
+                        }
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+</div>

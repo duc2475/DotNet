@@ -51,12 +51,8 @@
                                         }
                                     </td>
                                     <td class="row">
-                                        <a asp-action="Details" asp-controller="Users" asp-area="admin" asp-route-id="@item.UserId" class="btn btn-outline-primary col-3 mt-2">Details</a>
-                                        <a asp-action="Unactive" asp-controller="Users" asp-area="admin" asp-route-id="@item.UserId" class="btn btn-outline-primary col-3 mt-2">Unactive</a>
-                                        @* <form asp-action="Delete" class="col">
-                                            <input type="hidden" name="id" value="@item.UserId"/>
-                                            <input type="submit" value="Delete" class="btn btn-outline-danger mt-2" />
-                                        </form> *@
+                                        <a asp-action="Details" asp-controller="Users" asp-area="admin" asp-route-id="@item.UserId" class="btn btn-outline-primary col-4 mt-2">Details</a>
+                                        <a asp-action="Unactive" asp-controller="Users" asp-area="admin" asp-route-id="@item.UserId" class="btn btn-outline-danger col-4 mt-2 ms-2">Unactive</a>
                                     </td>
                                 </tr>
                             }

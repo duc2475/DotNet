@@ -26,7 +26,6 @@
                             <th>Tên Khách Hàng</th>
                             <th>Số Điện Thoại</th>
                             <th>Email</th>
-                            <th>Địa Chỉ</th>
                             <th>Thành Phố</th>
                             <th>Thao Tác</th>
                         </tr>
@@ -41,10 +40,9 @@
                                     <td><i class="fab fa-angular fa-lg text-danger me-3"></i> <strong>@item.CustName</strong></td>
                                     <td>@item.CustPhone</td>
                                     <td>@item.CustEmail</td>
-                                    <td>@item.CustAddress</td>
                                     <td>@item.CustCity</td>
                                     <td class="row">
-                                        <a asp-action="Details" asp-controller="Customers" asp-area="admin" asp-route-id="@item.CustId" class="btn btn-outline-primary col-3 mt-2">Details</a>
+                                        <a asp-action="Details" asp-controller="Customers" asp-area="admin" asp-route-id="@item.CustId" class="btn btn-outline-primary col-4 mt-2">Details</a>
                                         <form asp-action="Delete" class="col">
                                             <input type="hidden" name="id" value="@item.CustId" />
                                             <input type="submit" value="Delete" class="btn btn-outline-danger mt-2" />
