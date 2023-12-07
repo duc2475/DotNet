@@ -6,6 +6,7 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using Ecommerce.Models;
+using AspNetCoreHero.ToastNotification.Abstractions;
 
 namespace Ecommerce.Areas.admin.Controllers
 {
@@ -14,9 +15,12 @@ namespace Ecommerce.Areas.admin.Controllers
     {
         private readonly ecommerceContext _context;
 
-        public CartsController(ecommerceContext context)
+        public INotyfService _notyfService { get; }
+
+        public CartsController(ecommerceContext context, INotyfService notyfService)
         {
             _context = context;
+            _notyfService = notyfService;
         }
 
         // GET: admin/Carts
@@ -74,20 +78,33 @@ namespace Ecommerce.Areas.admin.Controllers
         }
 
         // GET: admin/Carts/Edit/5
+        [ActionName("UpdateStatus")]
         public async Task<IActionResult> Edit(int? id)
         {
-            if (id == null || _context.TblCarts == null)
+            try
             {
-                return NotFound();
+                var tblCart = await _context.TblCarts.FindAsync(id);
+                if (tblCart == null)
+                {
+                    _notyfService.Error("Cập nhật thất bại");
+                    return RedirectToAction(nameof(Index));
+                }
+                else
+                {
+                    tblCart.CartStatus = 1;
+                    _context.Update(tblCart);
+                    await _context.SaveChangesAsync();
+                    _notyfService.Success("Cập nhật thành công");
+                    return RedirectToAction(nameof(Index));
+                }
+                
             }
-
-            var tblCart = await _context.TblCarts.FindAsync(id);
-            if (tblCart == null)
+            catch (Exception ex)
             {
-                return NotFound();
+                _notyfService.Error("Cập nhật thất bại");
+                return RedirectToAction(nameof(Index));
             }
-            ViewData["CustId"] = new SelectList(_context.TblCustomers, "CustId", "CustId", tblCart.CustId);
-            return View(tblCart);
+            
         }
 
         // POST: admin/Carts/Edit/5

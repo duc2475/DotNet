@@ -59,6 +59,8 @@ namespace Ecommerce.Models
                     .IsUnicode(false)
                     .HasColumnName("cart_date");
 
+                entity.Property(e => e.CartStatus).HasColumnName("cart_status");
+
                 entity.Property(e => e.CustId).HasColumnName("cust_id");
 
                 entity.Property(e => e.TotalPrice)

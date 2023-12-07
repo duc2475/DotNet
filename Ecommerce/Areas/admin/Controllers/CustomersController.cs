@@ -8,6 +8,7 @@ using Microsoft.EntityFrameworkCore;
 using Ecommerce.Models;
 using PagedList.Core.Mvc;
 using PagedList.Core;
+using AspNetCoreHero.ToastNotification.Abstractions;
 
 namespace Ecommerce.Areas.admin.Controllers
 {
@@ -16,9 +17,12 @@ namespace Ecommerce.Areas.admin.Controllers
     {
         private readonly ecommerceContext _context;
 
-        public CustomersController(ecommerceContext context)
+        public INotyfService _notyfService { get; }
+
+        public CustomersController(ecommerceContext context, INotyfService notyfService)
         {
             _context = context;
+            _notyfService = notyfService;
         }
 
         // GET: admin/Customers
@@ -146,18 +150,28 @@ namespace Ecommerce.Areas.admin.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> DeleteConfirmed(int id)
         {
-            if (_context.TblCustomers == null)
+            try
             {
-                return Problem("Entity set 'ecommerceContext.TblCustomers'  is null.");
+                if (_context.TblCustomers == null)
+                {
+                    return Problem("Entity set 'ecommerceContext.TblCustomers'  is null.");
+                }
+                var tblCustomer = await _context.TblCustomers.FindAsync(id);
+                if (tblCustomer != null)
+                {
+                    _context.TblCustomers.Remove(tblCustomer);
+                }
+
+                await _context.SaveChangesAsync();
+                _notyfService.Success("Xoá thành công");
+                return RedirectToAction(nameof(Index));
             }
-            var tblCustomer = await _context.TblCustomers.FindAsync(id);
-            if (tblCustomer != null)
+            catch
             {
-                _context.TblCustomers.Remove(tblCustomer);
+                _notyfService.Error("Xoá không thành công");
+                return RedirectToAction(nameof(Index));
             }
             
-            await _context.SaveChangesAsync();
-            return RedirectToAction(nameof(Index));
         }
 
         private bool TblCustomerExists(int id)

@@ -51,8 +51,15 @@
                                         }
                                     </td>
                                     <td class="row">
-                                        <a asp-action="Details" asp-controller="Users" asp-area="admin" asp-route-id="@item.UserId" class="btn btn-outline-primary col-4 mt-2">Details</a>
-                                        <a asp-action="Unactive" asp-controller="Users" asp-area="admin" asp-route-id="@item.UserId" class="btn btn-outline-danger col-4 mt-2 ms-2">Unactive</a>
+                                        <a asp-action="Details" asp-controller="Users" asp-area="admin" asp-route-id="@item.UserId" class="btn btn-sm btn-outline-primary col-2 mt-2">Details</a>
+                                        <form class="col-2 mt-2" method="post" asp-action="Unactive" asp-controller="Users" asp-area="admin">
+                                            <input type="hidden" name="id" value="@item.UserId" />
+                                            <button type="submit" class="btn btn-sm btn-outline-danger">Unactive</button>
+                                        </form>
+                                        <form class="col-2 mt-2 ms-3" method="post" asp-action="Active" asp-controller="Users" asp-area="admin">
+                                            <input type="hidden" name="id" value="@item.UserId" />
+                                            <button type="submit" class="btn btn-sm btn-outline-success">Active</button>
+                                        </form>
                                     </td>
                                 </tr>
                             }

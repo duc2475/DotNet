@@ -9,6 +9,7 @@ using Ecommerce.Models;
 using PagedList.Core;
 using AspNetCoreHero.ToastNotification.Abstractions;
 using Microsoft.AspNetCore.Http.Extensions;
+using AspNetCoreHero.ToastNotification.Notyf;
 
 namespace Ecommerce.Areas.admin.Controllers
 {
@@ -19,9 +20,11 @@ namespace Ecommerce.Areas.admin.Controllers
     {
         private readonly ecommerceContext _context;
 
-        public ProductsPromotionsController(ecommerceContext context)
+        public INotyfService _notyfService { get; }
+        public ProductsPromotionsController(ecommerceContext context, INotyfService notyfService)
         {
             _context = context;
+            _notyfService = notyfService;
         }
 
 
@@ -190,21 +193,29 @@ namespace Ecommerce.Areas.admin.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> DeleteConfirmed(int id)
         {
-            if (_context.TblProductsPromotions == null)
+            try
             {
-                return Problem("Entity set 'ecommerceContext.TblProductsPromotions'  is null.");
-            }
-            var tblProductsPromotion = await _context.TblProductsPromotions.FindAsync(id);
-            int PromoId = tblProductsPromotion.PromoId;
-            if (tblProductsPromotion != null)
-            {
-                _context.TblProductsPromotions.Remove(tblProductsPromotion);
-            }
-            
-            await _context.SaveChangesAsync();
-            return Redirect("Index/" + PromoId.ToString());
-        }
+                if (_context.TblProductsPromotions == null)
+                {
+                    return Problem("Entity set 'ecommerceContext.TblProductsPromotions'  is null.");
+                }
+                var tblProductsPromotion = await _context.TblProductsPromotions.FindAsync(id);
+                int PromoId = tblProductsPromotion.PromoId;
+                if (tblProductsPromotion != null)
+                {
+                    _context.TblProductsPromotions.Remove(tblProductsPromotion);
+                }
 
+                await _context.SaveChangesAsync();
+                _notyfService.Success("Xoá thành công");
+                return RedirectToAction(nameof(Index));
+            }
+            catch
+            {
+                _notyfService.Error("Xoá không thành công");
+                return RedirectToAction(nameof(Index));
+            }
+        }
         private bool TblProductsPromotionExists(int id)
         {
           return (_context.TblProductsPromotions?.Any(e => e.PpId == id)).GetValueOrDefault();

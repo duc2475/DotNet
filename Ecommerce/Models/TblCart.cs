@@ -15,6 +15,7 @@ namespace Ecommerce.Models
         public string CartDate { get; set; } = null!;
         public string TotalPrice { get; set; } = null!;
         public int CustId { get; set; }
+        public int? CartStatus { get; set; }
 
         public virtual TblCustomer Cust { get; set; } = null!;
         public virtual ICollection<TblCartDetail> TblCartDetails { get; set; }

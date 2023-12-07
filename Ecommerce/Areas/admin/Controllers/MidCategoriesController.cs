@@ -6,6 +6,7 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using Ecommerce.Models;
+using AspNetCoreHero.ToastNotification.Abstractions;
 
 namespace Ecommerce.Areas.admin.Controllers
 {
@@ -14,9 +15,12 @@ namespace Ecommerce.Areas.admin.Controllers
     {
         private readonly ecommerceContext _context;
 
-        public MidCategoriesController(ecommerceContext context)
+        public INotyfService _notyfService { get; }
+
+        public MidCategoriesController(ecommerceContext context, INotyfService notyfService)
         {
             _context = context;
+            _notyfService = notyfService;
         }
 
         // GET: admin/MidCategories
@@ -146,18 +150,28 @@ namespace Ecommerce.Areas.admin.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> DeleteConfirmed(int id)
         {
-            if (_context.TblMidCategories == null)
+            try
             {
-                return Problem("Entity set 'ecommerceContext.TblMidCategories'  is null.");
+                if (_context.TblMidCategories == null)
+                {
+                    return Problem("Entity set 'ecommerceContext.TblMidCategories'  is null.");
+                }
+                var tblMidCategory = await _context.TblMidCategories.FindAsync(id);
+                if (tblMidCategory != null)
+                {
+                    _context.TblMidCategories.Remove(tblMidCategory);
+                }
+
+                await _context.SaveChangesAsync();
+                _notyfService.Success("Xoá thành công");
+                return RedirectToAction(nameof(Index));
             }
-            var tblMidCategory = await _context.TblMidCategories.FindAsync(id);
-            if (tblMidCategory != null)
+            catch
             {
-                _context.TblMidCategories.Remove(tblMidCategory);
+                _notyfService.Error("Xoá không thành công");
+                return RedirectToAction(nameof(Index));
             }
             
-            await _context.SaveChangesAsync();
-            return RedirectToAction(nameof(Index));
         }
 
         private bool TblMidCategoryExists(int id)

@@ -84,9 +84,17 @@ namespace Ecommerce.Controllers
                     CartItem item = cart.SingleOrDefault(x => x.Product.ProductId == productId);
                     if(item != null && amount.HasValue)
                     {
-                        item.amount = amount.Value;
+                        if(amount == 0)
+                        {
+                            Remove(productId);
+                        }
+                        else
+                        {
+                            item.amount = amount.Value; 
+                            HttpContext.Session.Set<List<CartItem>>("GioHang", cart);
+                        }
                     }
-                    HttpContext.Session.Set<List<CartItem>>("GioHang", cart);
+                    
                 }
                 return Json(new { success = true });
             }catch

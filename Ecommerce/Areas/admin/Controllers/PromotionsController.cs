@@ -6,6 +6,7 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using Ecommerce.Models;
+using AspNetCoreHero.ToastNotification.Abstractions;
 
 namespace Ecommerce.Areas.admin.Controllers
 {
@@ -14,9 +15,12 @@ namespace Ecommerce.Areas.admin.Controllers
     {
         private readonly ecommerceContext _context;
 
-        public PromotionsController(ecommerceContext context)
+        public INotyfService _notyfService { get; }
+
+        public PromotionsController(ecommerceContext context, INotyfService notyfService)
         {
             _context = context;
+            _notyfService = notyfService;
         }
 
         // GET: admin/Promotions
@@ -141,18 +145,28 @@ namespace Ecommerce.Areas.admin.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> DeleteConfirmed(int id)
         {
-            if (_context.TblPromotions == null)
+           
+            try
             {
-                return Problem("Entity set 'ecommerceContext.TblPromotions'  is null.");
+                if (_context.TblPromotions == null)
+                {
+                    return Problem("Entity set 'ecommerceContext.TblPromotions'  is null.");
+                }
+                var tblPromotion = await _context.TblPromotions.FindAsync(id);
+                if (tblPromotion != null)
+                {
+                    _context.TblPromotions.Remove(tblPromotion);
+                }
+
+                await _context.SaveChangesAsync();
+                _notyfService.Success("Xoá thành công");
+                return RedirectToAction(nameof(Index));
             }
-            var tblPromotion = await _context.TblPromotions.FindAsync(id);
-            if (tblPromotion != null)
+            catch
             {
-                _context.TblPromotions.Remove(tblPromotion);
+                _notyfService.Error("Xoá không thành công");
+                return RedirectToAction(nameof(Index));
             }
-            
-            await _context.SaveChangesAsync();
-            return RedirectToAction(nameof(Index));
         }
 
         private bool TblPromotionExists(int id)

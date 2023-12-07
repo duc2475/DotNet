@@ -190,19 +190,27 @@ namespace Ecommerce.Areas.admin.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> DeleteConfirmed(int id)
         {
-            if (_context.TblProducts == null)
+            try
             {
-                return Problem("Entity set 'ecommerceContext.TblProducts'  is null.");
-            }
-            var tblProduct = await _context.TblProducts.FindAsync(id);
-            if (tblProduct != null)
+                if (_context.TblProducts == null)
+                {
+                    return Problem("Entity set 'ecommerceContext.TblProducts'  is null.");
+                }
+                var tblProduct = await _context.TblProducts.FindAsync(id);
+                if (tblProduct != null)
+                {
+                    _context.TblProducts.Remove(tblProduct);
+                }
+
+                await _context.SaveChangesAsync();
+                _notyfService.Success("Xoá thành công");
+                return RedirectToAction(nameof(Index));
+            }catch (Exception ex)
             {
-                _context.TblProducts.Remove(tblProduct);
+                _notyfService.Error("Xoá không thành công");
+                return RedirectToAction(nameof(Index));
             }
-            
-            await _context.SaveChangesAsync();
-            _notyfService.Success("Xoá thành công");
-            return RedirectToAction(nameof(Index));
+           
         }
 
         private bool TblProductExists(int id)

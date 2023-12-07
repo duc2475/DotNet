@@ -141,17 +141,34 @@ namespace Ecommerce.Areas.admin.Controllers
             return View(tblUser);
         }
 
-        //Post: admin/Users/Unactive/5
-        [HttpPost, ActionName("Unactive")]
-        [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Unactive(int id)
+        [HttpPost, ActionName("Active")]
+        public async Task<IActionResult> Active(int id)
         {
-            if (_context.TblUsers == null)
-            {
-                return Problem("Entity set 'ecommerceContext.TblUsers'  is null.");
-            }
+
             var tblUser = await _context.TblUsers
                 .FirstOrDefaultAsync(m => m.UserId == id);
+
+            if (tblUser != null)
+            {
+                tblUser.UserStatus = "Active";
+                _context.Update(tblUser);
+            }
+            else
+            {
+                return RedirectToAction(nameof(Index));
+            }
+
+            await _context.SaveChangesAsync();
+            return RedirectToAction(nameof(Index));
+        }
+        //Post: admin/Users/Unactive/5
+        [HttpPost, ActionName("Unactive")]
+        public async Task<IActionResult> Unactive(int id)
+        {
+
+            var tblUser = await _context.TblUsers
+                .FirstOrDefaultAsync(m => m.UserId == id);
+            
             if (tblUser != null)
             {
                 tblUser.UserStatus = "Unactive";

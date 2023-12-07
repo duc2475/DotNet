@@ -55,7 +55,8 @@ namespace Ecommerce.Controllers
                     {
                         CartDate = DateTime.Now.ToString(),
                         TotalPrice = cart.Sum(x => x.totalMoney).ToString(),
-                        CustId = khachang.CustId
+                        CustId = khachang.CustId,
+                        CartStatus = 0
                     };
                     _context.Add(tblCart);
                     await _context.SaveChangesAsync();
@@ -74,19 +75,19 @@ namespace Ecommerce.Controllers
                     }
                     _context.AddRange(cartDetails);
                     await _context.SaveChangesAsync();
-                    _notyfService.Success("Thanh Toán Thành Công");
-                    HttpContext.Session.Clear();
+                    _notyfService.Success("Đặt Hàng Thành Công");
+                    HttpContext.Session.Remove("GioHang");
                     return View();
                 }
                 else
                 {
-                    _notyfService.Error("Thanh Toán Không Thành Công");
+                    _notyfService.Error("Đặt Hàng Không Thành Công");
                     return RedirectToAction("Index", "Accounts");
                 }
             }
             catch
             {
-                _notyfService.Error("Thanh Toán Không Thành Công");
+                _notyfService.Error("Đặt Hàng Không Thành Công");
                 return RedirectToAction("Index", "Accounts");
             }
             
