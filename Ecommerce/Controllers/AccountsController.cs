@@ -36,10 +36,12 @@ namespace Ecommerce.Controllers
 				if(khachhang != null)
 				{
 					var diachi = _context.TblUserCustomers.AsNoTracking().FirstOrDefault(x => x.UserId == khachhang.UserId);
+					var carts = _context.TblCarts.AsNoTracking().Include(x => x.TblCartDetails).OrderByDescending(x => x.CustId == khachhang.UserId);
 
                     if (diachi != null)
 					{
 						ViewBag.DiaChi = _context.TblCustomers.AsNoTracking().FirstOrDefault(x => x.CustId == diachi.CustId);
+						ViewBag.Carts = carts;
 					}
 					else
 					{
@@ -62,29 +64,29 @@ namespace Ecommerce.Controllers
 		[Route("dang-ky.html", Name = "DangKy")]
 		public async Task<IActionResult> Register(RegisterModel User, IFormFile file)
 		{
-			if (User != null)
+			if (User != null&& file != null)
 			{
-				string wwwRootPath = _hostEnviroment.WebRootPath;
-				string fileName = Path.GetFileName(file.FileName);
-				string extension = Path.GetExtension(file.FileName);
-				string path = Path.Combine(wwwRootPath + "/assets/img/users/", fileName);
-				using (var fileStream = new FileStream(path, FileMode.Create))
-				{
-					await file.CopyToAsync(fileStream);
-				}
-				TblUser tblUser = new TblUser
-				{
-					UserName = User.UserName,
-					UserEmail = User.UserEmail.Trim().ToLower(),
-					UserPhone = User.UserPhone.Trim().ToLower(),
-					UserPass = (User.UserPass).ToMD5(),
-					UserPhoto = fileName,
-					UserRole = "user",
-					UserStatus = "Active"
-				};
 				try
 				{
-					_context.Add(tblUser);
+                    string wwwRootPath = _hostEnviroment.WebRootPath;
+                    string fileName = Path.GetFileName(file.FileName);
+                    string extension = Path.GetExtension(file.FileName);
+                    string path = Path.Combine(wwwRootPath + "/assets/img/users/", fileName);
+                    using (var fileStream = new FileStream(path, FileMode.Create))
+                    {
+                        await file.CopyToAsync(fileStream);
+                    }
+                    TblUser tblUser = new TblUser
+                    {
+                        UserName = User.UserName,
+                        UserEmail = User.UserEmail.Trim().ToLower(),
+                        UserPhone = User.UserPhone.Trim().ToLower(),
+                        UserPass = (User.UserPass).ToMD5(),
+                        UserPhoto = fileName,
+                        UserRole = "user",
+                        UserStatus = "Active"
+                    };
+                    _context.Add(tblUser);
 					await _context.SaveChangesAsync();
 
 					HttpContext.Session.SetString("user_id", tblUser.UserId.ToString());
@@ -234,5 +236,18 @@ namespace Ecommerce.Controllers
 
             }
         }
+		[Route("chi-tiet-don-hang.html", Name ="ChiTietDonHang")]
+		public IActionResult CartDetails(int id)
+		{
+			var details = _context.TblCartDetails.AsNoTracking().Include(x => x.Product).OrderByDescending(x => x.CartId == id);
+			if(details == null)
+			{
+				return RedirectToAction(nameof(Index));
+			}
+			else
+			{
+				return View(details);
+			}
+		}
     }
 }

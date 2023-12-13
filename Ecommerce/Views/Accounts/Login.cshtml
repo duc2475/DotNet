@@ -13,11 +13,12 @@
         <div class="row">
             <div class="col-xl">
                 <div class="card mb-4">
-                    <div class="card-header d-flex justify-content-between align-items-center">
-                        <h5 class="mb-0">Đăng Ký</h5>
+                    <div class="card-header justify-content-between align-items-center">
+                        <h5 class="text" style="text-align:center">Đăng Ký</h5>
                     </div>
-                    <div class="card-body">
-                        <form asp-action="Login">
+                    <div class="card-body row">
+                        <div class="col-md-3"></div>
+                        <form asp-action="Login" class="col-md-6">
                             <div asp-validation-summary="ModelOnly" class="text-danger"></div>
                             <div class="form-group">
                                 <label asp-for="UserName" class="control-label"></label>
@@ -33,12 +34,14 @@
                                 <div class="form-group pt-4 col">
                                     <input type="submit" asp-action="Login" asp-controller="Accounts" value="Login" class="btn btn-primary" />
                                 </div>
-                                <div class="form-group pt-4 col-2">
-                                    <a asp-action="Register" asp-controller="Accounts" class="btn btn-primary">Go to Register</a>
+                                <div class="form-group pt-4 col-3">
+                                    <a asp-action="Register" asp-controller="Accounts" class="btn btn-primary">Register</a>
                                 </div>
                             </div>
                         </form>
+                        <div class="col-md-3"></div>
                     </div>
+                    
                 </div>
             </div>
         </div>

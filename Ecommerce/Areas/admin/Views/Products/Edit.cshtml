@@ -3,6 +3,7 @@
 @{
     ViewData["Title"] = "Edit";
     Layout = "~/Areas/admin/Views/Shared/_AdminLayout.cshtml";
+    IEnumerable<TblProductPic> pics = ViewBag.Pic;
 }
 
 <div class="content-wrapper">
@@ -28,10 +29,31 @@
                                 <input asp-for="ProductName" class="form-control" />
                                 <span asp-validation-for="ProductName" class="text-danger"></span>
                             </div>
-                            <div class="form-group">
-                                <label class="control-label">Hình Ảnh Sản Phẩm</label>
-                                <img class="img-fluid rounded form-control" src="~/assets/img/products/@Model.ProductPic" style="max-width: 150px" alt="" />
-                                <input type="file" name="file" class="form-control" />
+                            <div class="row">
+                                <div class="form-group col-md-6">
+                                    <label class="control-label">Hình Ảnh Sản Phẩm</label>
+                                    <img class="img-fluid rounded form-control" src="~/assets/img/products/@Model.ProductPic" style="max-width: 150px" alt="" />
+                                    <input type="file" name="file" class="form-control" />
+                                </div>
+                                <div class="form-group col-md-6">
+                                    <label class="control-label">Hình Ảnh Phụ Sản Phẩm</label>
+                                    @{
+                                        if(pics.Count() > 0)
+                                        {
+                                            foreach (var item in pics)
+                                            {
+                                                <img class="img-fluid rounded form-control" src="~/assets/img/products/@item.PicName" style="max-width: 150px" alt="" />
+                                                <input type="button" class="btn btn-danger btn-sm" />
+                                            }
+                                        }
+                                        else
+                                        {
+                                            <img class="img-fluid rounded form-control" src="~/assets/img/products/11771974_0.jpg" style="max-width: 185px" alt="" />
+                                        }
+
+                                    }
+                                    <input type="file" name="mfile" class="form-control" multiple />
+                                </div>
                             </div>
                             <div class="form-group">
                                 <label asp-for="Color" class="control-label">Màu Sắc</label>

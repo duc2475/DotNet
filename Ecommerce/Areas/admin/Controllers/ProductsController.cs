@@ -72,24 +72,51 @@ namespace Ecommerce.Areas.admin.Controllers
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("ProductId,ProductName,ProductPic,Color,StockQuantity,EcatId,ProductDes,ProductStatus,ProductPrice")] TblProduct tblProduct, IFormFile file)
+        public async Task<IActionResult> Create([Bind("ProductId,ProductName,ProductPic,Color,StockQuantity,EcatId,ProductDes,ProductStatus,ProductPrice")] TblProduct tblProduct, IFormFile file, List<IFormFile> mfile)
         {
             if (!ModelState.IsValid)
             {
-                string wwwRootPath = _hostEnviroment.WebRootPath;
-                string fileName = Path.GetFileName(file.FileName);
-                string extension = Path.GetExtension(file.FileName);
-                tblProduct.ProductPic = fileName;
-                string path = Path.Combine(wwwRootPath + "/assets/img/products/", fileName);
-                tblProduct.ProductSeo = Extention.Extention.ToUrlFriendly(tblProduct.ProductName);
-                using (var fileStream = new FileStream(path, FileMode.Create))
+                try
                 {
-                    await file.CopyToAsync(fileStream);
+                    string wwwRootPath = _hostEnviroment.WebRootPath;
+                    string fileName = Path.GetFileName(file.FileName);
+                    string extension = Path.GetExtension(file.FileName);
+                    tblProduct.ProductPic = fileName;
+                    string path = Path.Combine(wwwRootPath + "/assets/img/products/", fileName);
+                    tblProduct.ProductSeo = Extention.Extention.ToUrlFriendly(tblProduct.ProductName);
+                    using (var fileStream = new FileStream(path, FileMode.Create))
+                    {
+                        await file.CopyToAsync(fileStream);
+                    }
+                    _context.Add(tblProduct);
+                    await _context.SaveChangesAsync();
+                    foreach (var item in mfile)
+                    {
+                        string mfileName = Path.GetFileName(item.FileName);
+                        string mextension = Path.GetExtension(item.FileName);
+                        TblProductPic productPic = new TblProductPic
+                        {
+                            PicName = mfileName,
+                            ProductId = tblProduct.ProductId
+                        };
+                        string mpath = Path.Combine(wwwRootPath + "/assets/img/products/", mfileName);
+                        using (var mfileStream = new FileStream(mpath, FileMode.Create))
+                        {
+                            await item.CopyToAsync(mfileStream);
+                        }
+                        _context.Add(productPic);
+                        await _context.SaveChangesAsync();
+                    }
+                    
+                    _notyfService.Success("Thêm mới thành công");
+                    return RedirectToAction(nameof(Index));
                 }
-                _context.Add(tblProduct);
-                await _context.SaveChangesAsync();
-                _notyfService.Success("Thêm mới thành công");
-                return RedirectToAction(nameof(Index));
+                catch
+                {
+                    _notyfService.Error("Thêm mới không thành công");
+                    return RedirectToAction(nameof(Index));
+                }
+                
             }
             ViewData["EcatId"] = new SelectList(_context.TblEndCategories, "EcatId", "EcatName", tblProduct.EcatId.ToString());
             ViewData["ColorId"] = new SelectList(_context.TblColors, "ColorName", "ColorName", tblProduct.Color.ToString());
@@ -111,6 +138,7 @@ namespace Ecommerce.Areas.admin.Controllers
             }
             ViewData["EcatId"] = new SelectList(_context.TblEndCategories, "EcatId", "EcatName", tblProduct.EcatId.ToString());
             ViewData["ColorId"] = new SelectList(_context.TblColors, "ColorName", "ColorName", tblProduct.Color.ToString());
+            ViewBag.Pic = _context.TblProductPics.AsNoTracking().OrderByDescending(x => x.ProductId == id);
             return View(tblProduct);
         }
 
@@ -145,6 +173,7 @@ namespace Ecommerce.Areas.admin.Controllers
             {
                 try
                 {
+                    tblProduct.ProductSeo = Extention.Extention.ToUrlFriendly(tblProduct.ProductName);
                     _context.Update(tblProduct);
                     await _context.SaveChangesAsync();
                 }
@@ -199,6 +228,11 @@ namespace Ecommerce.Areas.admin.Controllers
                 var tblProduct = await _context.TblProducts.FindAsync(id);
                 if (tblProduct != null)
                 {
+                    var piclist = _context.TblProductPics.AsNoTracking().OrderByDescending(p => p.ProductId);
+                    foreach (var pic in piclist)
+                    {
+                        _context.TblProductPics.Remove(pic);
+                    }
                     _context.TblProducts.Remove(tblProduct);
                 }
 

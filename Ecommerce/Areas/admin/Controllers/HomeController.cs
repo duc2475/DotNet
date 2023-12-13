@@ -20,7 +20,10 @@ namespace Ecommerce.Areas.admin.Controllers
             {
                 return Redirect("/");
             }
-            return View();
+            ViewBag.DonHangs = _context.TblCarts.AsNoTracking().OrderByDescending(x => x.CartId);
+            ViewBag.Users = _context.TblUsers.AsNoTracking().OrderByDescending(x => x.UserRole != "admin");
+            ViewBag.Discount = _context.TblPromotions.AsNoTracking().OrderByDescending(x => x.PromoId);
+            return View(taikhoan);
         }
     }
 }

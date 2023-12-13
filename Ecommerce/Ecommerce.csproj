@@ -26,7 +26,6 @@
     <Folder Include="Areas\admin\Models\" />
     <Folder Include="wwwroot\assets\img\users\" />
     <Folder Include="wwwroot\assets\img\poster\" />
-    <Folder Include="wwwroot\assets\img\products\" />
   </ItemGroup>
 
 </Project>

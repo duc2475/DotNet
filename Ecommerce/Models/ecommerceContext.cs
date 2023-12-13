@@ -343,9 +343,7 @@ namespace Ecommerce.Models
 
                 entity.Property(e => e.EcatId).HasColumnName("ecat_id");
 
-                entity.Property(e => e.ProductDes)
-                    .HasColumnType("text")
-                    .HasColumnName("product_des");
+                entity.Property(e => e.ProductDes).HasColumnName("product_des");
 
                 entity.Property(e => e.ProductName)
                     .HasMaxLength(255)
