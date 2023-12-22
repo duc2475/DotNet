@@ -28,8 +28,9 @@ namespace Ecommerce.Controllers
                 .Include(x => x.Cust)
                 .SingleOrDefault(x => x.UserId.ToString() == taiKhoanId);
             ViewBag.Cart = cart;
-            if(khachang != null)
+            if(khachang != null && cart != null)
             {
+                _notyfService.Error("Giỏ Hàng Của Bạn Đang Trống");
                 return View(khachang);
             }
             else
@@ -72,6 +73,9 @@ namespace Ecommerce.Controllers
                             Quantity = item.amount
                         };
                         cartDetails.Add(cartDetail);
+                        var product = _context.TblProducts.AsNoTracking().SingleOrDefault(x => x.ProductId == item.Product.ProductId);
+                        product.StockQuantity = product.StockQuantity - item.amount;
+                        _context.Update(product);
                     }
                     _context.AddRange(cartDetails);
                     await _context.SaveChangesAsync();

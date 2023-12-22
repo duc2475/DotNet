@@ -16,7 +16,7 @@
             <div class="col-xl">
                 <div class="card mb-4">
                     <div class="card-header d-flex justify-content-between align-items-center">
-                        <h5 class="mb-0">Thêm Khuyến Mãi Mới</h5>
+                        <h5 class="mb-0">Sửa Khuyến Mãi Mới</h5>
                     </div>
                     <div class="card-body">
                         <form asp-action="Edit">
@@ -34,12 +34,12 @@
                             </div>
                             <div class="form-group">
                                 <label asp-for="PromoSdate" class="control-label"></label>
-                                <input asp-for="PromoSdate" class="form-control" />
+                                <input asp-for="PromoSdate" class="form-control" type="date"/>
                                 <span asp-validation-for="PromoSdate" class="text-danger"></span>
                             </div>
                             <div class="form-group">
                                 <label asp-for="PromoEdate" class="control-label"></label>
-                                <input asp-for="PromoEdate" class="form-control" />
+                                <input asp-for="PromoEdate" class="form-control" type="date"/>
                                 <span asp-validation-for="PromoEdate" class="text-danger"></span>
                             </div>
                             <div class="row">

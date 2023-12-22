@@ -35,15 +35,21 @@
                                     <img class="img-fluid rounded form-control" src="~/assets/img/products/@Model.ProductPic" style="max-width: 150px" alt="" />
                                     <input type="file" name="file" class="form-control" />
                                 </div>
-                                <div class="form-group col-md-6">
+                                <div class="form-group col-md-6 row">
                                     <label class="control-label">Hình Ảnh Phụ Sản Phẩm</label>
                                     @{
                                         if(pics.Count() > 0)
                                         {
                                             foreach (var item in pics)
                                             {
-                                                <img class="img-fluid rounded form-control" src="~/assets/img/products/@item.PicName" style="max-width: 150px" alt="" />
-                                                <input type="button" class="btn btn-danger btn-sm" />
+                                                <div class="col-md-3" style="position: relative; ">
+                                                    <img class="img-fluid rounded form-control" src="~/assets/img/products/@item.PicName" style="max-width: 150px" alt="" />
+                                                    <button class="btn btn-danger btn-sm" 
+                                                            style="position:absolute; top:15%; left:75%;cursor: pointer; transform: translate(-50%, -50%);-ms-transform: translate(-50%, -50%);"
+                                                            asp-action="Delete" asp-controller="ProductPics" asp-area="admin" asp-route-id="@item.PicId">
+                                                        X
+                                                    </button>
+                                                </div>
                                             }
                                         }
                                         else

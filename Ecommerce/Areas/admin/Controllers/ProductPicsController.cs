@@ -151,13 +151,14 @@ namespace Ecommerce.Areas.admin.Controllers
                 return Problem("Entity set 'ecommerceContext.TblProductPics'  is null.");
             }
             var tblProductPic = await _context.TblProductPics.FindAsync(id);
+            var productId = tblProductPic.ProductId;
             if (tblProductPic != null)
             {
                 _context.TblProductPics.Remove(tblProductPic);
             }
             
             await _context.SaveChangesAsync();
-            return RedirectToAction(nameof(Index));
+            return Redirect("/admin/Products/Edit/"+ productId.ToString());
         }
 
         private bool TblProductPicExists(int id)

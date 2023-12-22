@@ -160,7 +160,6 @@ namespace Ecommerce.Models
                 entity.Property(e => e.CustId).HasColumnName("cust_id");
 
                 entity.Property(e => e.CustAddress)
-                    .HasColumnType("text")
                     .HasColumnName("cust_address");
 
                 entity.Property(e => e.CustCity)

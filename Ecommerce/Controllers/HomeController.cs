@@ -23,7 +23,8 @@ namespace Ecommerce.Controllers
                 .Include(x =>x.Promo)
                 .Include(x =>x.Product)
                 .OrderByDescending(x => x.PpId)
-                .Take(3).ToListAsync()) : Problem("Entity set 'ecommerceContext.TblProductsPromotions'  is null.");
+                .Take(11)
+                .ToListAsync()) : Problem("Entity set 'ecommerceContext.TblProductsPromotions'  is null.");
         }
 
 

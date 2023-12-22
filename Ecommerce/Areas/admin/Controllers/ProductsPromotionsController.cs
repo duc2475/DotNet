@@ -10,6 +10,7 @@ using PagedList.Core;
 using AspNetCoreHero.ToastNotification.Abstractions;
 using Microsoft.AspNetCore.Http.Extensions;
 using AspNetCoreHero.ToastNotification.Notyf;
+using System.Drawing.Printing;
 
 namespace Ecommerce.Areas.admin.Controllers
 {
@@ -67,8 +68,8 @@ namespace Ecommerce.Areas.admin.Controllers
             return View(tblProductsPromotion);
         }
 
-        // GET: admin/ProductsPromotions/Create
-        public IActionResult Create(int? page, int promoid)
+		// GET: admin/ProductsPromotions/Create
+		public IActionResult Create(int? page, int promoid)
         {
             var pageNumber = page == null || page <= 0 ? 1 : page.Value;
             var pageSize = 20;
@@ -88,29 +89,45 @@ namespace Ecommerce.Areas.admin.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Create(int? page,int id, int pp)
         {
-            var pageNumber = page == null || page <= 0 ? 1 : page.Value;
-            var pageSize = 20;
-            var lsProduct = _context.TblProducts
-                .AsNoTracking()
-                .OrderByDescending(x => x.ProductId);
-            PagedList<TblProduct> models = new PagedList<TblProduct>(lsProduct, pageNumber, pageSize);
-            ViewBag.CurrentPage = pageNumber;
-            ViewBag.Promo = _context.TblPromotions.FirstOrDefault(e => e.PromoId == pp);
-            var PP = _context.TblProductsPromotions
-                .AsNoTracking()
-                .OrderByDescending(x => x.PromoId)
-                .Where(x => x.PromoId == pp);
-            foreach (var item in PP)
+            try
             {
-                if(item.ProductId == id)
-                {
-                    return View(models);
-                }
+				var pageNumber = page == null || page <= 0 ? 1 : page.Value;
+				var pageSize = 20;
+				var lsProduct = _context.TblProducts
+					.AsNoTracking()
+					.OrderByDescending(x => x.ProductId);
+				PagedList<TblProduct> models = new PagedList<TblProduct>(lsProduct, pageNumber, pageSize);
+				ViewBag.CurrentPage = pageNumber;
+				ViewBag.Promo = _context.TblPromotions.FirstOrDefault(e => e.PromoId == pp);
+				var PP = _context.TblProductsPromotions
+					.AsNoTracking()
+					.OrderByDescending(x => x.PromoId)
+					.Where(x => x.PromoId == pp);
+				foreach (var item in PP)
+				{
+					if (item.ProductId == id)
+					{
+						return View(models);
+					}
+				}
+				TblProductsPromotion tblProductsPromotion = new TblProductsPromotion { ProductId = id, PromoId = pp };
+				_context.Add(tblProductsPromotion);
+				await _context.SaveChangesAsync();
+				return View(models);
             }
-            TblProductsPromotion tblProductsPromotion = new TblProductsPromotion { ProductId = id, PromoId = pp };
-            _context.Add(tblProductsPromotion);
-            await _context.SaveChangesAsync();
-            return View(models);
+			catch
+            {
+				var pageNumber = page == null || page <= 0 ? 1 : page.Value;
+				var pageSize = 20;
+				var lsProduct = _context.TblProducts
+					.AsNoTracking()
+					.OrderByDescending(x => x.ProductId);
+				PagedList<TblProduct> models = new PagedList<TblProduct>(lsProduct, pageNumber, pageSize);
+				ViewBag.CurrentPage = pageNumber;
+				ViewBag.Promo = _context.TblPromotions.FirstOrDefault(e => e.PromoId == pp);
+				return View(models);
+			}
+            
         }
 
         // GET: admin/ProductsPromotions/Edit/5

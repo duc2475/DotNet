@@ -147,7 +147,7 @@ namespace Ecommerce.Areas.admin.Controllers
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(int id, [Bind("ProductId,ProductName,ProductPic,Color,StockQuantity,EcatId,ProductDes,ProductStatus,ProductPrice")] TblProduct tblProduct, IFormFile? file)
+        public async Task<IActionResult> Edit(int id, [Bind("ProductId,ProductName,ProductPic,Color,StockQuantity,EcatId,ProductDes,ProductStatus,ProductPrice")] TblProduct tblProduct, IFormFile? file, IEnumerable<IFormFile> mfile)
         {
             if (id != tblProduct.ProductId)
             {
@@ -173,9 +173,37 @@ namespace Ecommerce.Areas.admin.Controllers
             {
                 try
                 {
-                    tblProduct.ProductSeo = Extention.Extention.ToUrlFriendly(tblProduct.ProductName);
-                    _context.Update(tblProduct);
-                    await _context.SaveChangesAsync();
+                    if(mfile != null)
+                    {
+                        foreach (var item in mfile)
+                        {
+                            string wwwRootPath = _hostEnviroment.WebRootPath;
+                            string mfileName = Path.GetFileName(item.FileName);
+                            string mextension = Path.GetExtension(item.FileName);
+                            TblProductPic productPic = new TblProductPic
+                            {
+                                PicName = mfileName,
+                                ProductId = tblProduct.ProductId
+                            };
+                            string mpath = Path.Combine(wwwRootPath + "/assets/img/products/", mfileName);
+                            using (var mfileStream = new FileStream(mpath, FileMode.Create))
+                            {
+                                await item.CopyToAsync(mfileStream);
+                            }
+                            _context.Add(productPic);
+                            await _context.SaveChangesAsync();
+                        }
+                        tblProduct.ProductSeo = Extention.Extention.ToUrlFriendly(tblProduct.ProductName);
+                        _context.Update(tblProduct);
+                        await _context.SaveChangesAsync();
+                    }
+                    else
+                    {
+                        tblProduct.ProductSeo = Extention.Extention.ToUrlFriendly(tblProduct.ProductName);
+                        _context.Update(tblProduct);
+                        await _context.SaveChangesAsync();
+                    }
+                    
                 }
                 catch (DbUpdateConcurrencyException)
                 {

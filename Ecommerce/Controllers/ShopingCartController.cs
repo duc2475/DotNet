@@ -40,17 +40,21 @@ namespace Ecommerce.Controllers
             List<CartItem> gioHang = GioHang;
             try
             {
+                TblProduct product = _context.TblProducts.AsNoTracking().SingleOrDefault(x => x.ProductId == productId);
 				CartItem item = GioHang.SingleOrDefault(x => x.Product.ProductId == productId);
 				if (item != null)
                 {
                     if (amount.HasValue)
                     {
                         item.amount = amount.Value;
-                    }
-                    else
+						gioHang.SingleOrDefault(x => x.Product.ProductId == productId).amount = item.amount;
+					}
+                    else if(product.StockQuantity > 0 && item.amount < product.StockQuantity)
                     {
                         item.amount++;
+						gioHang.SingleOrDefault(x => x.Product.ProductId == productId).amount = item.amount;
                     }
+                    
                 }
                 else
                 {
