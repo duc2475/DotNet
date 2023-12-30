@@ -1,5 +1,150 @@
-﻿@*
-    For more information on enabling MVC for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
-*@
+﻿
+
 @{
+	ViewData["Title"] = "Về Chúng Tôi";
 }
+
+<div class="hero">
+	<div class="container">
+		<div class="row justify-content-between">
+			<div class="col-lg-5">
+				<div class="intro-excerpt">
+					<h1>Family Báo <span clsas="d-block">E-Commerce Web</span></h1>
+					<p class="mb-4">Trang thương mại điện tử bán thiết bị điện tử tuyệt vời nhất dành cho ví tiền của bạn.</p>
+					<p><a asp-action="Index" asp-controller="Shop" class="btn btn-secondary me-2">Shop Now</a>
+				</div>
+			</div>
+			<div class="col-lg-7">
+				<div class="hero-img-wrap">
+					<img src="~/assets/img/backgrounds/iphone-13-pro-png.png" class="img-fluid ms-lg-5" style="max-width: 500px" />
+				</div>
+			</div>
+		</div>
+	</div>
+</div>
+
+<div class="why-choose-section">
+	<div class="container">
+		<div class="row justify-content-between align-items-center">
+			<div class="col-lg-6">
+				<h2 class="section-title">Tại Sao Lại Chọn Chúng Tôi</h2>
+				<p>Các chương trình khuyến mãi đang được áp dụng đặc biệt chỉ có trong thời gian này sao bạn không ghé qua để có thế tham khảo những dòng sản phẩm đang được giảm giá lớn</p>
+
+				<div class="row my-5">
+					<div class="col-6 col-md-6">
+						<div class="feature">
+							<div class="icon">
+								<img src="~/assets/img/icons/truck.svg" alt="Image" class="imf-fluid">
+							</div>
+							<h3>Fast &amp; Free Shipping</h3>
+							<p>Vận chuyển nhanh chóng với các dịch vụ hỗ trọ vận chuyển đang có uy tín lớn nhất toàn quốc</p>
+						</div>
+					</div>
+
+					<div class="col-6 col-md-6">
+						<div class="feature">
+							<div class="icon">
+								<img src="~/assets/img/icons/bag.svg" alt="Image" class="imf-fluid">
+							</div>
+							<h3>Easy to Shop</h3>
+							<p>Dễ dàng thao tác, các bước mua hàng chỉ đơn giản là những cú chạm tay</p>
+						</div>
+					</div>
+
+					<div class="col-6 col-md-6">
+						<div class="feature">
+							<div class="icon">
+								<img src="~/assets/img/icons/support.svg" alt="Image" class="imf-fluid">
+							</div>
+							<h3>24/7 Support</h3>
+							<p>Hỗ trợ khách hàng 24/24 với đội ngũ trực hệ thống có thể tư vấn cho khách 24/24 qua chat support</p>
+						</div>
+					</div>
+
+					<div class="col-6 col-md-6">
+						<div class="feature">
+							<div class="icon">
+								<img src="~/assets/img/icons/return.svg" alt="Image" class="imf-fluid">
+							</div>
+							<h3>Hassle Free Returns</h3>
+							<p>Có quy trình đổi trả hàng dễ dàng cho khách hàng nếu mặt hàng không đúng với mô tả của sản phẩm</p>
+						</div>
+					</div>
+
+				</div>
+			</div>
+
+			<div class="col-lg-5">
+				<div class="img-wrap">
+					<img src="~/assets/img/icons/cx5313_tc_b.webp" alt="Image" class="img-fluid">
+				</div>
+			</div>
+
+		</div>
+
+		<div class="row justify-content-between align-items-center mt-5">
+
+			<div class="col-lg-5">
+				<div class="img-wrap">
+					<img src="~/assets/img/icons/oip (1).jpg" alt="Image" class="img-fluid">
+				</div>
+            </div>
+
+			<div class="col-lg-6">
+				<h2 class="section-title">Các bước cài đặt hệ thống</h2>
+				<p>E-commerce hay thương mại điện tử là quá trình mua bán hàng hóa và dịch vụ trên mạng Internet. E-commerce có nhiều lợi ích như tăng cường kinh doanh, tiếp cận khách hàng, giảm chi phí, v.v. Nhưng e-commerce cũng đặt ra nhiều vấn đề an ninh, pháp lý và đạo đức cho các bên tham gia giao dịch. </p>
+
+				<div class="row my-5">
+					<div class="col-6 col-md-6">
+						<div class="feature">
+							<div class="icon">
+								<img src="~/assets/img/icons/laptop-check-alt-svgrepo-com (1).svg" alt="Image" class="imf-fluid">
+							</div>
+							<h3>Về phần cứng</h3>
+							<p>
+								-	CPU Intel 12th Gen Core i5-1240P (16 nhân) – xung nhịp 1.7 Ghz
+								-	16 GB RAM
+								-	512 GB SSD
+								-	GPU Intel Iris Xe Graphics Family 8 GB VRAM
+							</p>
+						</div>
+					</div>
+
+					<div class="col-6 col-md-6">
+						<div class="feature">
+							<div class="icon">
+								<img src="~/assets/img/icons/software-svgrepo-com.svg" alt="Image" class="imf-fluid">
+							</div>
+							<h3>Về phần mềm</h3>
+							<p>
+								-	Microsoft Windows 11
+								-	Microsoft Visual Studio
+								-	Microsoft Edge, Google Chrome và Mozilla Firefox
+							</p>
+						</div>
+					</div>
+
+					<div class="col-12 col-md-12">
+						<div class="feature">
+							<div class="icon" style="margin-left:45%">
+								<img src="~/assets/img/icons/install-svgrepo-com.svg" alt="Image" class="imf-fluid">
+							</div>
+							<h3 style="margin-left:42%">Các bước cài đặt</h3>
+							<p>
+								-	Git clone dự án về từ https://github.com/duc2475/DotNet
+								-	Sử dụng SQL Server Management Studio: tạo 1 database trống, đặt tên bất kỳ.
+								-	Vào Visual Studio: Kết nối với database (bằng tính năng New Connection trong Server Explorer)  Trong Add new connection: Nhập tên server (nếu là localhost thì dấu chấm hoặc tên của máy tính)  xổ ra chọn đúng tên database đã tạo ở bước đầu  Test connection (nếu OK thì kết nối).
+								-	Mở môi trường dòng lệnh (NuGet Console): gõ Add-Migration NewMigr  Enter dể tạo 1 file migration từ các model.
+								-	Cũng trong chế độ console: Update-database để cập nhật dữ liệu vào cơ sở dữ liệu.
+								-	Build và debug lần đầu tiên với `http`.
+							</p>
+						</div>
+					</div>
+
+				</div>
+			</div>
+
+		</div>
+
+	</div>
+</div>

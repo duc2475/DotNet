@@ -21,10 +21,10 @@
                     <h5 class="text mt-5" style="text-align:center">Thông Tin Đơn Hàng</h5>
                     <table class="table table-striped">
                         <thead>
-                            <tr>
-                                <th>ID Đơn Hàng</th>
-                                <th>Tổng Tiền Đơn Hàng</th>
-                                <th>Ngày Tạo Đơn Hàng</th>
+                            <tr style="text-align:center">
+                                <th>ID</th>
+                                <th>Tổng Tiền</th>
+                                <th>Ngày Tạo</th>
                                 <th>Tình Trạng</th>
                                 <th>Thao Tác</th>
                             </tr>
@@ -32,7 +32,7 @@
                         <tbody>
                             @foreach (var item in carts)
                             {
-                                <tr>
+                                <tr style="text-align:center">
                                     <td>@item.CartId</td>
                                     <td>@int.Parse(item.TotalPrice).ToString("#,##0") VNĐ</td>
                                     <td>@item.CartDate</td>
@@ -40,16 +40,16 @@
                                         @{
                                             if (item.CartStatus == 0)
                                             {
-                                                <span class="badge bg-label-danger">Đang Chờ</span>
+                                                <span class="text text-danger">Đang Chờ</span>
                                             }
                                             else
                                             {
-                                                <span class="badge bg-label-success">Đã Xác Nhận</span>
+                                                <span class="text text-primary">Xác Nhận</span>
                                             }
                                         }
                                     </td>
                                     <td>
-                                        <a asp-action="CartDetails" asp-controller="Accounts" asp-route-id="@item.CartId" class="btn btn-sm btn-primary">Chi tiết</a>
+                                        <a asp-action="CartDetails" asp-controller="Accounts" asp-route-id="@item.CartId" class="btn btn-sm btn-primary">Details</a>
                                     </td>
                                 </tr>
                             }

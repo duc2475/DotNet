@@ -58,7 +58,9 @@ namespace Ecommerce.Controllers
                 }
                 else
                 {
-                    TblProduct tblProduct = _context.TblProducts.SingleOrDefault(x => x.ProductId == productId);
+                    TblProduct tblProduct = _context.TblProducts.Include(x=>x.TblProductsPromotions)
+                        .ThenInclude(x=>x.Promo)
+                        .SingleOrDefault(x => x.ProductId == productId);
                     item = new CartItem
                     {
                         amount = amount.HasValue ? amount.Value : 1,

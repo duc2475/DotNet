@@ -11,5 +11,7 @@ namespace Ecommerce.Models
 
         public virtual TblProduct Product { get; set; } = null!;
         public virtual TblPromotion Promo { get; set; } = null!;
+        
+        public int getdiscount() { return Promo.PromoDiscount; }
     }
 }

@@ -87,13 +87,8 @@
                         <!-- accepted payments column -->
                         <div class="col-6">
                             <p class="lead">Phương Thức Thanh Toán:</p>
-                            <a>
-                                <img src="~/assets/img/icons/vnpay-seeklogo.com.svg" style="max-width:100px" class="img-fluid ms-3" />
-                            </a>
-                            
-                            <a>
-                                <img src="~/assets/img/icons/unicons/paypal.png" class="img-fluid ms-5"/>
-                            </a>
+
+                            <div id="paypal-button-container" style="max-width:100px; margin-top:10px"></div>
                         </div>
                         <!-- total column -->
                         <div class="col-6">
@@ -121,3 +116,47 @@
             </div>            
     </div>
 </div>
+@section Scripts{
+        <script src="https://www.paypal.com/sdk/js?client-id=@ViewBag.PaypalClientId"></script>
+        <script>
+            paypal.Buttons({
+                style: {
+                    disableMaxWidth: true
+                }, 
+                createOrder: (data, actions) => {
+                    // This function sets up the details of the transaction, including the amount and line item details.
+                    return fetch("/Checkout/create-paypal-order", {
+                        method: "POST",
+                    }).then((response) => {
+                        if (!response.ok) {
+                            return response.json().then(err => {
+                                throw error;
+                            });
+                        }
+                        return response.json();
+                    })
+                    .then((order) => order.id)
+                    .catch(error => {
+                        alert(error.message)
+                    });
+                },
+                onApprove: (data, actions) => {
+                    // This function captures the funds from the transaction.
+                    return fetch('/Checkout/capture-paypal-order?orderId=${data.orderId}', {
+                        method: "POST",
+                    })
+                        .then((response) => {
+                            if (!response.ok) {
+                                return response.json().then((err) => {
+                                    throw error;
+                                });
+                            }
+                            window.location.href = "thankyou-paypal-payment.html";
+                        })
+                        .catch(err => {
+                            alert(err.message)
+                        });
+                }
+            }).render('#paypal-button-container');
+        </script>
+}

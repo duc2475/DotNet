@@ -221,9 +221,18 @@ namespace Ecommerce.Controllers
         [HttpPost]
         public async Task<IActionResult> FixAddress(int id, string CustName, string CustLname, string CustEmail, string CustPhone, string CustAddress, string CustCity, string CustSate, string CustZip, string CustDatetime, int CustStatus)
         {
-			var customer = _context.TblCustomers.AsNoTracking().SingleOrDefault(x => x.CustId == id);
+			var customer = _context.TblCustomers.AsNoTracking().SingleOrDefault(x => x.CustId == _context.TblUserCustomers.FirstOrDefault(x=>x.UserId ==id).CustId);
 			if(customer != null)
 			{
+				customer.CustName = CustName;
+				customer.CustLname = CustLname;
+				customer.CustEmail = CustEmail;
+				customer.CustPhone = CustPhone;
+				customer.CustAddress = CustAddress;
+				customer.CustCity = CustCity;
+				customer.CustSate = CustSate;
+				customer.CustDatetime = CustDatetime;
+				customer.CustStatus = CustStatus;
 				_context.Update(customer);
                 await _context.SaveChangesAsync();
                 _notyfService.Success("Cập nhật thành công");
@@ -239,13 +248,14 @@ namespace Ecommerce.Controllers
 		[Route("chi-tiet-don-hang.html", Name ="ChiTietDonHang")]
 		public IActionResult CartDetails(int id)
 		{
-			var details = _context.TblCartDetails.AsNoTracking().Include(x => x.Product).OrderByDescending(x => x.CartId == id);
+			var details = _context.TblCartDetails.AsNoTracking().Include(x => x.Product).OrderByDescending(x => x.CartId).Where(x => x.CartId == id);
 			if(details == null)
 			{
 				return RedirectToAction(nameof(Index));
 			}
 			else
 			{
+				ViewBag.Cart = _context.TblCarts.AsNoTracking().FirstOrDefault(x => x.CartId == id);
 				return View(details);
 			}
 		}

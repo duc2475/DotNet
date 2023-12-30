@@ -3,4 +3,39 @@
 @{
     ViewData["Title"] = "Thông tin đơn hàng";
     Layout = "~/Views/Shared/_Layout.cshtml";
+    TblCart cart = ViewBag.Cart;
 }
+<div style="margin-top:100px; margin-bottom:200px;margin-left:25%;margin-right:25%">
+    <h4 style="text-align:center; margin-bottom:50px;">Thông tin chi tiết đơn hàng</h4>
+    <table class="table " style="margin-left: auto; margin-right: auto;">
+        <thead>
+            <tr style="text-align:center">
+                <th>ID Sản Phẩm</th>
+                <th>Tên Sản Phẩm</th>
+                <th>Hình Ảnh</th>
+                <th>Giá Bán</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var item in Model)
+            {
+                <tr style="text-align:center">
+                    <td>@Html.DisplayFor(modelsitem => item.ProductId)</td>
+                    <td><i class="fab fa-angular fa-lg text-danger me-3"></i> <strong>@Html.DisplayFor(modelsitem => item.ProductName)</strong></td>
+                    <td>
+                        <div class="d-flex align-items-center ms-md-5">
+                            <img class="img-fluid rounded" src="~/assets/img/products/@item.ProductPic" style="max-width: 45px" alt="" />
+                        </div>
+                    </td>
+                    <td>@item.Product.ProductPrice.Value.ToString("#,##0")VNĐ</td>
+                </tr>
+            }
+            <tr style="text-align:center">
+                <td></td>
+                <td></td>
+                <td>Thành Tiền(đã giảm)</td>
+                <td>@int.Parse(cart.TotalPrice).ToString("#,##0") VNĐ</td>
+            </tr>
+        </tbody>
+    </table>
+</div>

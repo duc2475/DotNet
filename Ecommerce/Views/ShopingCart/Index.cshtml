@@ -63,7 +63,7 @@
                                                     </div>
 
                                                 </td>
-                                                <td>@((item.Product.ProductPrice.Value * item.amount).ToString("#,##0")) VNĐ</td>
+                                            <td class="text-decoration-line-through">@((item.Product.ProductPrice.Value * item.amount).ToString("#,##0")) VNĐ</td>
                                             <td><input type="button" class="removeItem btn btn-primary btn-sm" data-mahh="@item.Product.ProductId" value="X"/></td>
                                             </tr>
                                         }

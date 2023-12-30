@@ -5,6 +5,11 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>@ViewData["Title"] - Ecommerce</title>
     <meta name="author" content="Untree.co">
+	<meta property="og:url" content="@Context.Request.Host" />
+	<meta property="og:type" content="website" />
+	<meta property="og:title" content="FamilyBao ECommerce" />
+	<meta property="og:description" content="The Best ECommerce Web" />
+	<meta property="og:image" content="https://www.your-domain.com/path/image.jpg" />
     <link rel="shortcut icon" href="favicon.png">
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css" rel="stylesheet">
     <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.min.css" />
@@ -26,9 +31,9 @@
 						<a class="nav-link" asp-action="Index" asp-controller="Home">Home</a>
 					</li>
 					<li><a class="nav-link" asp-action="Index" asp-controller="Shop">Shop</a></li>
-					<li><a class="nav-link">About us</a></li>
-					<li><a class="nav-link" >Services</a></li>
-					<li><a class="nav-link" >Contact us</a></li>
+					<li><a class="nav-link" asp-action="About" asp-controller="Home">About us</a></li>
+					<li><a class="nav-link" asp-action="Services" asp-controller="Home">Services</a></li>
+					<li><a class="nav-link" asp-action="Contact" asp-controller="Home">Contact us</a></li>
 				</ul>
 
 				<ul class="custom-navbar-cta navbar-nav mb-2 mb-md-0 ms-5">
@@ -143,6 +148,8 @@
     <script src="~/js/site.js" asp-append-version="true"></script>
     <script src="~/js/custom.js"></script>
     <script src="~/js/tiny-slider.js"></script>
+	<div id="fb-root"></div>
+	<script async defer crossorigin="anonymous" src="https://connect.facebook.net/vi_VN/sdk.js#xfbml=1&version=v18.0" nonce="cRJS9jMn"></script>
     @await RenderSectionAsync("Scripts", required: false)
 </body>
 </html>

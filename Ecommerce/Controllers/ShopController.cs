@@ -15,18 +15,45 @@ namespace Ecommerce.Controllers
 			_context = context;
 		}
 		[Route("shop.html", Name ="Shop")]
-		public IActionResult Index(int? page)
+		public IActionResult Index(int page = 1, int type =  0)
 		{
-			var pageNumber = page == null || page <= 0 ? 1 : page.Value;
-			var pageSize = 20;
-			var lsProduct = _context.TblProducts
-				.AsNoTracking()
-				.Include(x => x.TblProductsPromotions)
-				.OrderByDescending(x => x.ProductId)
-				.Where(x => x.ProductStatus == "Active");
-			PagedList<TblProduct> models = new PagedList<TblProduct>(lsProduct, pageNumber, pageSize);
-			ViewBag.CurrentPage = pageNumber;
-			return View(models);
+			if(type == 0)
+			{
+				var pageNumber = page;
+				var pageSize = 16;
+				var lsProduct = _context.TblProducts
+					.AsNoTracking()
+					.OrderByDescending(x => x.ProductId)
+					.Include( x => x.TblProductsPromotions)
+					.ThenInclude(x => x.Promo)
+					.Where(x => x.ProductStatus == "Active");
+				ViewBag.TCats = _context.TblTopCategories.AsNoTracking().OrderByDescending(x => x.TcatId);
+				ViewBag.MCats = _context.TblMidCategories.AsNoTracking().OrderByDescending(x => x.McatId);
+				ViewBag.ECats = _context.TblEndCategories.AsNoTracking().OrderByDescending(x => x.EcatId);
+				PagedList<TblProduct> models = new PagedList<TblProduct>(lsProduct, pageNumber, pageSize);
+				ViewBag.CurrentPage = pageNumber;
+				ViewBag.Type = _context.TblEndCategories.AsNoTracking().Include(x => x.Mcat).FirstOrDefault(x => x.EcatId == type);
+				return View(models);
+			}
+			else
+			{
+				var pageNumber = page;
+				var pageSize = 16;
+				var lsProduct = _context.TblProducts
+					.AsNoTracking()
+					.Where(x => x.EcatId == type)
+					.Include(x => x.TblProductsPromotions)
+                    .ThenInclude(x => x.Promo)
+                    .OrderByDescending(x => x.ProductId)
+					.Where(x => x.ProductStatus == "Active");
+				ViewBag.TCats = _context.TblTopCategories.AsNoTracking().OrderByDescending(x => x.TcatId);
+				ViewBag.MCats = _context.TblMidCategories.AsNoTracking().OrderByDescending(x => x.McatId);
+				ViewBag.ECats = _context.TblEndCategories.AsNoTracking().OrderByDescending(x => x.EcatId);
+				PagedList<TblProduct> models = new PagedList<TblProduct>(lsProduct, pageNumber, pageSize);
+				ViewBag.CurrentPage = pageNumber;
+				ViewBag.Type = _context.TblEndCategories.AsNoTracking().Include(x => x.Mcat).FirstOrDefault(x => x.EcatId == type);
+				return View(models);
+			}
 		}
 		[Route("/shop/{ProductSeo}-{ProductId}.html", Name = "Details")]
 		public IActionResult Details(int? ProductId)
@@ -34,6 +61,9 @@ namespace Ecommerce.Controllers
 			var product = _context.TblProducts
 				.AsNoTracking()
 				.Include(x =>x.Ecat)
+				.Include(x => x.TblProductPics)
+				.Include(x => x.TblProductsPromotions)
+				.ThenInclude(x => x.Promo)
 				.SingleOrDefault(x => x.ProductId == ProductId);
 			if(product == null)
 			{

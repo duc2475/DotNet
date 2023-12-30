@@ -26,6 +26,7 @@
                             <th>Tên Khách Hàng</th>
                             <th>Tổng Tiền</th>
                             <th>Ngày Đặt Hàng</th>
+                            <th>Thanh Toán</th>
                             <th>Trạng Thái</th>
                             <th>Thao Tác</th>
                         </tr>
@@ -35,11 +36,27 @@
                         {
                             <tr>
                                 <td>@Html.DisplayFor(modelsitem => item.Cust.CustId)</td>
-                                <td><i class="fab fa-angular fa-lg text-danger me-3"></i> <strong>@Html.DisplayFor(modelsitem => item.Cust.CustLname)</strong></td>
+                                <td><i class="fab fa-angular fa-lg text-danger me-3"></i> <strong>@item.Cust.CustLname @item.Cust.CustName</strong></td>
                                 <td>
-                                    @Html.DisplayFor(modelsitem => item.TotalPrice)) VNĐ
+                                    @Convert.ToInt32(item.TotalPrice).ToString("#,##0") VNĐ
                                 </td>
                                 <td>@Html.DisplayFor(modelsitem => item.CartDate)</td>
+                                <td>
+                                    @{
+                                        if (item.CartStatus == 0)
+                                        {
+                                            <span class="badge bg-label-danger">COD</span>
+                                        }
+                                        else if (item.CartStatus == 1)
+                                        {
+                                            <span class="badge bg-label-success">Hoàn thành</span>
+                                        }
+                                        else if (item.CartStatus > 1)
+                                        {
+                                            <span class="badge bg-label-success">Paypal</span>
+                                        }
+                                    }
+                                </td>
                                 <td>
                                     @{
                                         if(item.CartStatus == 0)

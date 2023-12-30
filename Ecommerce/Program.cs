@@ -1,7 +1,10 @@
 using AspNetCoreHero.ToastNotification;
 using Ecommerce.Models;
+using Ecommerce.ModelsView;
+using Ecommerce.PayPal;
 using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.IdentityModel.Protocols;
 using System.Text.Encodings.Web;
 using System.Text.Unicode;
 
@@ -20,6 +23,17 @@ builder.Services.AddAuthentication(CookieAuthenticationDefaults.AuthenticationSc
         p.LoginPath = "/dang-nhap.html";
         p.AccessDeniedPath = "/";
     });
+
+builder.Services.AddOptions();
+var mailSetting = builder.Configuration.GetSection("MailSetting");
+builder.Services.Configure<MailSetting>(mailSetting);
+builder.Services.AddTransient<SendMailService>();
+
+builder.Services.AddSingleton(x => new PaypalClient(
+    builder.Configuration["PaypalOptions:AppId"],
+    builder.Configuration["PaypalOptions:AppSecret"],
+    builder.Configuration["PaypalOptions:Mode"]
+    ));
 
 var app = builder.Build();
 
@@ -43,11 +57,11 @@ app.UseAuthorization();
 app.UseEndpoints(endpoints =>
 {
     endpoints.MapControllerRoute(
+       name: "default",
+       pattern: "{controller=Home}/{action=Index}/{id?}");
+    endpoints.MapControllerRoute(
         name: "areas",
         pattern: "{area:exists}/{controller=Home}/{action=Index}/{id?}");
-    endpoints.MapControllerRoute(
-        name: "default",
-        pattern: "{controller=Home}/{action=Index}/{id?}");
 });
 
 

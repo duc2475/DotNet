@@ -1,18 +1,33 @@
 ﻿@model Ecommerce.Models.TblProduct
-
+@using Microsoft.AspNetCore.Http.Extensions
 @{
     ViewData["Title"] = "Details";
+    string url = Context.Request.Host+"/shop/{Model.ProductSeo}-{Model.ProductId}.html";
+    string faceShare = "https://www.facebook.com/sharer/sharer.php?u=" + url;
 }
 
 <div class="container py-lg-5">
     <h1 class="text-center m-5">Thông Tin Chi Tiết Sản Phẩm</h1>
     <div class="row">
-        <div class="col-md-5 m-0">
+        <div id="selectedImageArea" class="col-md-5 m-0">
             <img src="~/assets/img/products/@Model.ProductPic" alt="Product Image" class="img-fluid">
         </div>
         <div class="col-md-5 ms-1">
             <h2 class="text-primary">@Model.ProductName - @Model.Color</h2>
-            <h3 class="text-success mt-3">@Model.ProductPrice.Value.ToString("#,##0") VNĐ</h3>
+            @{
+                if (Model.TblProductsPromotions.Count() != 0)
+                {
+                    <h3 class="text small mt-3 text-decoration-line-through">@Model.ProductPrice.Value.ToString("#,##0") VNĐ</h3>
+                    <div class="row">
+                        <h3 class="text-success mt-3 col-md-5">@((Model.ProductPrice - (Model.ProductPrice * Model.TblProductsPromotions.FirstOrDefault(x => x.ProductId == Model.ProductId).Promo.PromoDiscount / 100)).Value.ToString("#,##0"))VNĐ</h3>
+                        <div class="col-md-2 mt-lg-4 mb-lg-4" style="display:block ;margin-left: 15px;font-size: .75rem;color: #fff;text-transform: uppercase;background: #ee4d2d;border-radius: 2px;padding: 2px 4px;font-weight: 600;line-height: 1;white-space: nowrap;">
+                            @Model.TblProductsPromotions.FirstOrDefault(x => x.ProductId == Model.ProductId).Promo.PromoDiscount Giảm%
+                        </div>
+                    </div>
+                }else{
+                    <h3 class="text-success mt-3">@Model.ProductPrice.Value.ToString("#,##0") VNĐ</h3>
+                }
+            }
             @{
                 if(Model.StockQuantity > 0)
                 {
@@ -23,13 +38,20 @@
                     <h4 class="text-danger mt-3">Tồn Kho: @Model.StockQuantity</h4>
                 }
             }
-            <h5 class="text-primary">Ngành Hàng: @Model.Ecat.EcatName</h5>
+            <h5 class="text-primary mt-3">Ngành Hàng: @Model.Ecat.EcatName</h5>
             
             <div class="row">
-                <input type="number" id="txtsoLuong" name="txtsoLuong" max="@Model.StockQuantity" class="col-md-3" style="border:none; text-align:center" />
-                <a class="add-to-cart btn btn-primary col-md-3 ms-5">Buy Now</a>
+                <input type="number" id="txtsoLuong" name="txtsoLuong" max="@Model.StockQuantity" class="col-md-3 mt-3" style="border:none; text-align:center" />
+                <a class="add-to-cart btn btn-primary col-md-3 ms-5 mt-3">Buy Now</a>
                 <input type="hidden" asp-for="ProductId"/>
             </div>
+            <div class="mt-3 fb-share-button" data-href="@url" data-layout="" data-size="">
+                <a>Chia sẻ:</a>
+                <a style='padding: 0 5px' target='_blank' href="@faceShare" class="fb-xfbml-parse-ignore"><img src="~/assets/img/icons/icons8-facebook (1).svg" style='border:0; height:40px' /></a>
+            </div>
+        </div>
+        <div class="mt-lg-5">
+            <h3>Thông Tin Chi Tiết Mặt Hàng: </h3>
             <p class="text-muted mt-3">@Model.ProductDes</p>
         </div>
     </div>

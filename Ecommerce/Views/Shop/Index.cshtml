@@ -1,20 +1,40 @@
 ﻿@using PagedList.Core.Mvc;
 @model PagedList.Core.IPagedList<Ecommerce.Models.TblProduct>
 @{
-    int CurrentPage = ViewBag.CurrentPage;
+	IEnumerable<TblTopCategory> Tcats = ViewBag.TCats;
+	IEnumerable<TblMidCategory> Mcats = ViewBag.MCats;
+	IEnumerable<TblEndCategory> Ecats = ViewBag.ECats;
+	TblEndCategory ecat = ViewBag.Type;
+	int CurrentPage = ViewBag.CurrentPage;
     ViewData["Title"] = "Trang Mua Sắm" + CurrentPage;
 }
 
 <div class="hero">
 	<div class="container">
 		<div class="row justify-content-between">
-			<div class="col-lg-5">
-				<div class="intro-excerpt">
-					<p><i class='bx bx-search-alt-2'></i>Tìm kiếm Sản Phâm</p>
-					<input id="keyword" name="keyword" type="text" class="form-control" placeholder="Tên Sản Phẩm">
+			<div class="col-lg-8">
+				<div class="row">
+					<div class="intro-excerpt col-lg-6">
+						<p><i class='bx bx-search-alt-2'></i>Tìm kiếm Sản Phâm</p>
+						<input id="keyword" name="keyword" type="text" class="form-control" placeholder="Tên Sản Phẩm">
+					</div>
+					<div class="intro-excerpt col-lg-6 row">
+						<p>Ngành Sản Phẩm</p>
+							<form asp-action="Index" asp-controller="Shop">
+								<select class="form-control" id="txtCatID" name="type">
+									<option selected value="0">All</option>
+									@foreach (var item in Ecats)
+									{
+										<option value="@item.EcatId">@item.EcatName</option>
+									}
+								</select>
+								<input type="hidden" value="1" name="page"/>
+								<input class="btn btn-sm btn-outline-primary mt-3" type="submit" value="Tìm" />
+							</form>
+					</div>
 				</div>
 			</div>
-			<div class="col-lg-7">
+			<div class="col-lg-4">
 				<div class="hero-img-wrap">
 					<img src="~/assets/img/backgrounds/iphone-13-pro-png.png" class="img-fluid ms-lg-5" style="max-width: 300px"/>
 				</div>
@@ -25,21 +45,51 @@
 
 <div class="untree_co-section product-section before-footer-section">
 	<div class="container">
+		<div>
+			@{
+				if (ecat != null)
+				{
+									<h3>Ngành Hàng: @ecat.EcatName</h3>
+				}
+				else
+				{
+									<h3>Ngành Hàng: Tất Cả</h3>
+				}
+			}
+		</div>
 		<div class="row" id="records_table">
 			@if(Model != null)
 			{
 				foreach(var item in Model)
 				{
-					string url = $"/shop/{item.ProductSeo}-{item.ProductId}.html";
-					<div class="col-12 col-md-4 col-lg-3 mb-5 mb-md-0 mt-5">
-						<div class="product-item">
-							<a href="@url">
-								<img src="~/assets/img/products/@item.ProductPic" class="img-fluid product-thumbnail">
-								<h3 class="product-title">@item.ProductName</h3>
-								<strong class="product-price">@((item.ProductPrice).Value.ToString("#,##0"))VNĐ </strong>
-							</a>
+					if (item.TblProductsPromotions.FirstOrDefault(x => x.ProductId == item.ProductId) != null)
+					{
+						string url = $"/shop/{item.ProductSeo}-{item.ProductId}.html";
+						<div class="col-12 col-md-4 col-lg-3 mb-5 mb-md-0 mt-5">
+							<div class="product-item">
+								<a href="@url">
+									<img src="~/assets/img/products/@item.ProductPic" class="img-fluid product-thumbnail">
+									<h3 class="product-title">@item.ProductName</h3>
+									<p class="product-price text-decoration-line-through">@item.ProductPrice.Value.ToString("#,##0")VNĐ</p>
+									<strong class="product-price">@((item.ProductPrice - (item.ProductPrice * item.TblProductsPromotions.FirstOrDefault(x => x.ProductId == item.ProductId).Promo.PromoDiscount / 100)).Value.ToString("#,##0"))VNĐ </strong>
+								</a>
+							</div>
 						</div>
-					</div>
+					}
+					else
+					{
+						string url = $"/shop/{item.ProductSeo}-{item.ProductId}.html";
+						<div class="col-12 col-md-4 col-lg-3 mb-5 mb-md-0 mt-5">
+							<div class="product-item">
+								<a href="@url">
+									<img src="~/assets/img/products/@item.ProductPic" class="img-fluid product-thumbnail">
+									<h3 class="product-title">@item.ProductName</h3>
+									<strong class="product-price">@((item.ProductPrice).Value.ToString("#,##0"))VNĐ </strong>
+								</a>
+							</div>
+						</div>
+					}
+					
 				}
 			}
 		</div>
@@ -76,6 +126,32 @@
 @section Scripts{
 	<script>
 		$(document).ready(function () {
+
+			jQuery("#txtCatID").change(function () {
+				var CatId = jQuery(this).children(":selected").attr("value");
+				CatId = parseFloat(CatId);
+				$('#txtCatID option')
+					.removeAttr('selected');
+				$("#txtCatID > [value=" + CatId + "]").attr("selected", "true");
+				$ajax({
+					url: '/Shop/Filter',
+					datatype: "json",
+					type: "GET",
+					data: {
+						type: CatId
+					},
+					async: true,
+					success: function (results) {
+						if (results.status == "success") {
+							window.location.href = results.redirectUrl;
+						}
+					},
+					error: function (xhr) {
+						alert("error");
+					}
+				});
+			});
+
 			$("#keyword").keyup(function () {
 				var strkeyword = $('#keyword').val();
 				$.ajax({
@@ -93,6 +169,7 @@
 					}
 				});
 			});
+
 			$(".add-to-cart").click(function () {
 				var productid = $('#ProductId').val();
 				var soLuong = $('#txtsoLuong').val();
@@ -115,6 +192,7 @@
 					}
 				});
 			});
+
 		});
 
 	</script>

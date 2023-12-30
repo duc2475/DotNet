@@ -1,4 +1,6 @@
-﻿using Ecommerce.Models;
+﻿using AspNetCoreHero.ToastNotification.Abstractions;
+using Ecommerce.Models;
+using Ecommerce.ModelsView;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using System.Diagnostics;
@@ -11,10 +13,15 @@ namespace Ecommerce.Controllers
 
         private readonly ecommerceContext _context;
 
-        public HomeController(ILogger<HomeController> logger, ecommerceContext context)
+        private readonly SendMailService _sendMailService;
+
+        public INotyfService _notyfService;
+        public HomeController(ILogger<HomeController> logger, ecommerceContext context, SendMailService sendMailService, INotyfService notyfService)
         {
             _logger = logger;
             _context = context;
+            _sendMailService = sendMailService;
+            _notyfService = notyfService;
         }
         public async Task<IActionResult> Index()
         {
@@ -27,9 +34,44 @@ namespace Ecommerce.Controllers
                 .ToListAsync()) : Problem("Entity set 'ecommerceContext.TblProductsPromotions'  is null.");
         }
 
+		public IActionResult About()
+		{
+            return View();
+		}
 
+        public IActionResult Services() 
+        { 
+            
+            return View();
+        }
 
-        [ResponseCache(Duration = 0, Location = ResponseCacheLocation.None, NoStore = true)]
+        [Route("Contact.html", Name ="Contact")]
+        public IActionResult Contact()
+        {
+            return View();
+        }
+
+        public async Task<IActionResult> SendMail(string fname, string lname, string email, string message)
+        {
+            try
+            {
+                var mailContent = new MailContent();
+                mailContent.To = "custombanphim@gmail.com";
+                mailContent.Subject = lname + " " + fname + " " + email + " " + "Contact!";
+                mailContent.Body = message;
+                await _sendMailService.SendMail(mailContent);
+                _notyfService.Success("Gửi mail thành công");
+                return RedirectToAction("Contact");
+            }
+            catch(Exception ex)
+            {
+                _notyfService.Error(ex.Message);
+                return RedirectToAction("Contact");
+            }
+            
+        }
+
+		[ResponseCache(Duration = 0, Location = ResponseCacheLocation.None, NoStore = true)]
         public IActionResult Error()
         {
             return View(new ErrorViewModel { RequestId = Activity.Current?.Id ?? HttpContext.TraceIdentifier });
