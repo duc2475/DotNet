@@ -208,7 +208,7 @@ namespace Ecommerce.Areas.admin.Controllers
         // POST: admin/ProductsPromotions/Delete/5
         [HttpPost, ActionName("Delete")]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> DeleteConfirmed(int id)
+        public async Task<IActionResult> DeleteConfirmed(int id, string returnurl)
         {
             try
             {
@@ -225,7 +225,7 @@ namespace Ecommerce.Areas.admin.Controllers
 
                 await _context.SaveChangesAsync();
                 _notyfService.Success("Xoá thành công");
-                return RedirectToAction(nameof(Index));
+                return Redirect(returnurl);
             }
             catch
             {

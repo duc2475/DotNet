@@ -36,7 +36,7 @@ namespace Ecommerce.Controllers
 				if(khachhang != null)
 				{
 					var diachi = _context.TblUserCustomers.AsNoTracking().FirstOrDefault(x => x.UserId == khachhang.UserId);
-					var carts = _context.TblCarts.AsNoTracking().Include(x => x.TblCartDetails).OrderByDescending(x => x.CustId == khachhang.UserId);
+					var carts = _context.TblCarts.AsNoTracking().Include(x => x.TblCartDetails).Include(x => x.Cust).OrderByDescending(x => x.CustId == khachhang.UserId);
 
                     if (diachi != null)
 					{
@@ -64,10 +64,19 @@ namespace Ecommerce.Controllers
 		[Route("dang-ky.html", Name = "DangKy")]
 		public async Task<IActionResult> Register(RegisterModel User, IFormFile file)
 		{
+			var userd = _context.TblUsers.AsNoTracking().OrderByDescending(x => x.UserId);
+			foreach(var item in userd)
+			{
+				if(item.UserName == User.UserName)
+				{
+                    return RedirectToAction("Register", "Accounts");
+                }
+			}
 			if (User != null&& file != null)
 			{
 				try
 				{
+
                     string wwwRootPath = _hostEnviroment.WebRootPath;
                     string fileName = Path.GetFileName(file.FileName);
                     string extension = Path.GetExtension(file.FileName);

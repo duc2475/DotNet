@@ -30,29 +30,44 @@
                             </tr>
                         </thead>
                         <tbody>
-                            @foreach (var item in carts)
+                            @if(carts != null)
                             {
-                                <tr style="text-align:center">
-                                    <td>@item.CartId</td>
-                                    <td>@int.Parse(item.TotalPrice).ToString("#,##0") VNĐ</td>
-                                    <td>@item.CartDate</td>
-                                    <td>
-                                        @{
-                                            if (item.CartStatus == 0)
-                                            {
-                                                <span class="text text-danger">Đang Chờ</span>
+                                @foreach (var item in carts.Where(x => x.CustId == cust.CustId))
+                                {
+                                    <tr style="text-align:center">
+                                        <td>@item.CartId</td>
+                                        <td>@int.Parse(item.TotalPrice).ToString("#,##0") VNĐ</td>
+                                        <td>@item.CartDate</td>
+                                        <td>
+                                            @{
+                                                if (item.CartStatus == 0)
+                                                {
+                                                    <span class="text text-danger">Đang Chờ</span>
+                                                }
+                                                else
+                                                {
+                                                    <span class="text text-primary">Xác Nhận</span>
+                                                }
                                             }
-                                            else
-                                            {
-                                                <span class="text text-primary">Xác Nhận</span>
-                                            }
-                                        }
-                                    </td>
-                                    <td>
-                                        <a asp-action="CartDetails" asp-controller="Accounts" asp-route-id="@item.CartId" class="btn btn-sm btn-primary">Details</a>
-                                    </td>
-                                </tr>
+                                        </td>
+                                        <td>
+                                            <a asp-action="CartDetails" asp-controller="Accounts" asp-route-id="@item.CartId" class="btn btn-sm btn-primary">Details</a>
+                                        </td>
+                                    </tr>
+                                }
                             }
+                            else
+                            {
+                                <tr>
+                                    <td></td>
+                                    <td></td>
+                                    <td style="text-align:center">Chưa Có Đơn Hàng Nào</td>
+                                    <td></td>
+                                    <td></td>
+                                </tr>
+                               
+                            }
+
                         </tbody>
                     </table>
                 </div>

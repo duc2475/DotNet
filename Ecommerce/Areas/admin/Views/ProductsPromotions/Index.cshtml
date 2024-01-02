@@ -7,6 +7,7 @@
     TblPromotion promotion = ViewBag.PromoName;
     ViewData["Title"] = "Index";
     Layout = "~/Areas/admin/Views/Shared/_AdminLayout.cshtml";
+    string returnurl = /* Context.Request.Host.ToString() + */ Context.Request.Path.ToString();
 }
 
 
@@ -81,6 +82,7 @@
                                     <td>
                                         <form asp-action="Delete" class="col">
                                             <input type="hidden" name="id" value="@item.PpId" />
+                                            <input type="hidden" name="returnurl" value="@returnurl" />
                                             <input type="submit" value="Delete" class="btn btn-outline-danger mt-2" />
                                         </form>
                                     </td>
